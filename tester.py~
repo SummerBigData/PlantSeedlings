@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.filters import hessian
-import cv2
+
 
 
 import dataPrep
@@ -12,30 +12,22 @@ import dataPrep
 
 
 
-def PlotImgs(imgs, numImgs):
-	fig, axes = plt.subplots(nrows=numImgs, ncols=4)
+def PlotImgs(imgs, nrows, ncols):
+	fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
 	ax = axes.ravel()
 	for i in range(imgs.shape[0]):
 		ax[i].imshow(imgs[i])
+		ax[i].axes.get_yaxis().set_visible(False)
+		ax[i].axes.get_xaxis().set_visible(False)
 		#ax[i].set_title(label[labels[i]])
 	#plt.tight_layout()
 	plt.show()
 
-def create_mask_for_plant(image, sensitivity): # 35
-    image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-    #sensitivity = 35
-    lower_hsv = np.array([60 - sensitivity, 100, 50])
-    upper_hsv = np.array([60 + sensitivity, 255, 255])
-
-    mask = cv2.inRange(image_hsv, lower_hsv, upper_hsv)
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11,11))
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-    
-    return mask
 
 
-imgs, labels = dataPrep.getTrainDat(100)
+
+
+
 
 
 '''
@@ -68,23 +60,38 @@ PlotImgs(imgPlot, 5)
 '''
 
 
+dim = 400
+numSplits = 3
 
+imgs, labels = dataPrep.getTrainDat(dim)
+numImgs = imgs.shape[0]
 
-imgPlot = np.zeros((40, 100, 100, 3))
+#imgPlot = np.zeros(( (numSplits+1)*numImgs, dim, dim, 3))
+stampBWall = np.zeros((imgs.shape[0], dim, dim))
 
-for i in range(20):
-	fmatted = (imgs[i]*255.0).astype(np.uint8)
-	mask = create_mask_for_plant(fmatted , 35)
-	mask = mask.reshape((100, 100, 1))
-	maskRGB = np.concatenate(( mask, mask, mask), axis=2) / 255.0
-	print imgs[i].min(), imgs[i].max()
-	print mask.min(), mask.max()
-	print ' '
-	imgPlot[i*2] = imgs[i]
-	imgPlot[i*2+1] = maskRGB
+for i in range(numImgs):
+	if i%100 ==0:
+		print 'image', i
+		print ''
+	mask = dataPrep.getPlantMask(imgs[i], 36)
+	mask = mask.reshape((dim, dim, 1))
+	maskRGB = np.concatenate((mask, mask, mask), axis = 2)
+	
+	stamp = np.multiply(maskRGB, imgs[i])
+	stampBW = np.mean(stamp, axis=2)
+	stampBW = stampBW.reshape((dim, dim, 1))
+	stampBW = np.concatenate((stampBW, stampBW, stampBW), axis = 2)
+	stampBW, _, _ = dataPrep.Norm(stampBW, 0, 1)
+	stampBWall[i] = stampBW[:, :, 0]
+	'''
+	imgPlot[i*4] = imgs[i]
+	imgPlot[i*4+1] = maskRGB
+	imgPlot[i*4+2] = stamp
+	imgPlot[i*4+3] = stampBW
+	'''
+#PlotImgs(imgPlot, numImgs, numSplits+1)
 
-
-PlotImgs(imgPlot, 10)
+np.save('data/trainImgsRes'+str(dim)+'stampBW'++str(dim), stampBWall)
 
 
 

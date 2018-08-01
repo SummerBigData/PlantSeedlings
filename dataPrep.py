@@ -114,51 +114,35 @@ def getcnn(imgsize):
 	from keras.layers.normalization import BatchNormalization
 	#from keras import regularizers
 
-	p_activation = "elu"
+	p_activation = "relu"
 	input_1 = Input(shape=(imgsize, imgsize, 3))
 	#input_2 = Input(shape=[1], name="angle")
-	c1 = Conv2D(16,kernel_size = (3,3),activation=p_activation)(input_1)
 
-	c2 = Conv2D(16, kernel_size = (3,3), activation=p_activation) (c1)
-	c2 = MaxPooling2D((2,2)) (c2)
-	c2 = Dropout(0.2)(c2)
-
-	c3 = Conv2D(32, kernel_size = (3,3), activation=p_activation) (c2)
-
-	c4 = Conv2D(32, kernel_size = (3,3), activation=p_activation) (c3)
-	c4 = MaxPooling2D((2,2)) (c4)
-	c4 = Dropout(0.2)(c4)
-
-	c5 = Conv2D(64, kernel_size = (3,3), activation=p_activation) (c4)
-
-	c6 = Conv2D(64, kernel_size = (3,3), activation=p_activation) (c5)
-	c6 = MaxPooling2D((2,2)) (c6)
-	c6 = Dropout(0.2)(c6)
-
-	c7 = Conv2D(128, kernel_size = (3,3), activation=p_activation) (c6)
-	c7 = MaxPooling2D((2,2)) (c7)
-	c7 = Dropout(0.2)(c7)
-	c8 = c7
 	
-	'''
-	c8 = Conv2D(128, kernel_size = (3,3), activation=p_activation)(c7)
-	c8 = MaxPooling2D((2,2)) (c8)
-	c8 = Dropout(0.2)(c8)
-	#c8 = GlobalMaxPooling2D() (c8)
-	'''
-	#img_concat =(Concatenate()([img_1, img_2, BatchNormalization(momentum=bn_model)(input_2)]))
-	d = Flatten()(c8)
+	convFilters = [16, 16, 32, 32]
+	
+	c = input_1
+	for i in range(len(convFilters)):
+		c = Conv2D(convFilters[i], kernel_size = (3,3), activation=p_activation) (c)
+		c = MaxPooling2D((2,2)) (c)
+		c = Dropout(0.2)(c)
+
+	d = Flatten()(c)
 	d = BatchNormalization()(d)
-	d = Dense(256, activation=p_activation)(d)
-	d = Dropout(0.2)(d)
-	d = Dense(64, activation=p_activation)(d) 
-	d = Dropout(0.2)(d)
+
+	denseFilters = [64, 32]
+	
+	for i in range(len(denseFilters)):
+		d = Dense(denseFilters[i], activation=p_activation)(d)
+		d = Dropout(0.2)(d)
+	
 	output = Dense(12, activation="sigmoid")(d)
 
 	model = Model(input_1,  output)
-	
+
 	#optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-	optimizer = SGD(lr=1e-2, momentum=0.9, nesterov=True)
+	optimizer = Adam(lr=1e-4)
+	#optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True)
 	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 	model.summary()
 	return model
@@ -174,15 +158,31 @@ def get_callbacks(filepath, patience=8):
 	return [es, msave, reduce_lr]
 
 
-def DatSplit(x, y, numb): # numb example: 0.75
+def DatSplit(x, y, testSplit, folds): # split example: 0.25 for  3/1 train/test split
+	'''
 	numb *= x.shape[0]
 	numb = int(numb)
 	xtr = x[0:numb]
 	xte = x[numb:]
 	ytr = y[0:numb]
-	yte = y[numb:]
+	yte = y[numb:]	
+	'''
+	from sklearn.cross_validation import StratifiedShuffleSplit
+	sss = StratifiedShuffleSplit(y, folds, test_size=testSplit, random_state=0)
+	
+	xtrSplit = []
+	xteSplit = []
+	ytrSplit = []
+	yteSplit = []
+	for train_index, test_index in sss:
+		xtrSplit.append( x[train_index] )
+		xteSplit.append( x[test_index] )
+	
+		ytrSplit.append( y[train_index] )
+		yteSplit.append( y[test_index] )
 
-	return xtr, ytr, xte, yte
+
+	return xtrSplit, ytrSplit, xteSplit, yteSplit
 
 def Norm(mat, nMin, nMax):
 	# Calculate the old min, max and convert to float values
@@ -194,7 +194,25 @@ def Norm(mat, nMin, nMax):
 	normMat = ((mat - Min) / (Max - Min)) * (nMax - nMin) + nMin
 	return normMat, Min, Max
 
+def getPlantMask(image, sensitivity): # 36
+	import cv2
+	img = (image*255.0).astype(np.uint8)
+	image_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+	#sensitivity = 35
+	lower_hsv = np.array([60 - sensitivity, 100, 50])
+	upper_hsv = np.array([60 + sensitivity, 255, 255])
 
+	mask = cv2.inRange(image_hsv, lower_hsv, upper_hsv)
+	kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11,11))
+	mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+
+	def sharpen_image(image):
+		image_blurred = cv2.GaussianBlur(image, (0, 0), 3)
+		image_sharp = cv2.addWeighted(image, 1.5, image_blurred, -0.5, 0)
+		return image_sharp
+
+	sharpmask = sharpen_image(mask) / 255.0
+	return sharpmask
 
 
 

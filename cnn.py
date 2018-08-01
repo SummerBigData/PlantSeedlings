@@ -8,12 +8,13 @@ from keras.utils.np_utils import to_categorical
 
 seed = 7
 dim = 100
-
+folds = 3
+split = 0.2
 
 
 imgs, labels = dataPrep.getTrainDat(dim)
 x, y = dataPrep.shuffleData(imgs, labels, seed)
-xtr, ytr, xte, yte = dataPrep.DatSplit(x, y, 0.75)
+xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(x, y, split, folds)
 
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
@@ -38,6 +39,9 @@ model.save('models/cnnModel' + str(dim) )
 callbacks = dataPrep.get_callbacks(filepath=saveStr, patience=40)
 
 # Need labels in matrix shape for the model, so convert to binary
+xtr, ytr = xtrSp[0], ytrSp[0]
+xte, yte = xteSp[0], yteSp[0]
+
 ytr_binary = to_categorical(ytr)
 yte_binary = to_categorical(yte)
 print ytr_binary.shape, yte_binary.shape

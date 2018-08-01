@@ -2,6 +2,8 @@ Using TensorFlow backend.
 /users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
   from ._conv import register_converters as _register_converters
 Found data with correct size
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
@@ -9,82 +11,188 @@ input_1 (InputLayer)         (None, 100, 100, 3)       0
 _________________________________________________________________
 conv2d_1 (Conv2D)            (None, 98, 98, 16)        448       
 _________________________________________________________________
-conv2d_2 (Conv2D)            (None, 96, 96, 16)        2320      
+max_pooling2d_1 (MaxPooling2 (None, 49, 49, 16)        0         
 _________________________________________________________________
-max_pooling2d_1 (MaxPooling2 (None, 48, 48, 16)        0         
+dropout_1 (Dropout)          (None, 49, 49, 16)        0         
 _________________________________________________________________
-dropout_1 (Dropout)          (None, 48, 48, 16)        0         
+conv2d_2 (Conv2D)            (None, 47, 47, 16)        2320      
 _________________________________________________________________
-conv2d_3 (Conv2D)            (None, 46, 46, 32)        4640      
+max_pooling2d_2 (MaxPooling2 (None, 23, 23, 16)        0         
 _________________________________________________________________
-conv2d_4 (Conv2D)            (None, 44, 44, 32)        9248      
+dropout_2 (Dropout)          (None, 23, 23, 16)        0         
 _________________________________________________________________
-max_pooling2d_2 (MaxPooling2 (None, 22, 22, 32)        0         
+conv2d_3 (Conv2D)            (None, 21, 21, 32)        4640      
 _________________________________________________________________
-dropout_2 (Dropout)          (None, 22, 22, 32)        0         
+max_pooling2d_3 (MaxPooling2 (None, 10, 10, 32)        0         
 _________________________________________________________________
-conv2d_5 (Conv2D)            (None, 20, 20, 64)        18496     
+dropout_3 (Dropout)          (None, 10, 10, 32)        0         
 _________________________________________________________________
-conv2d_6 (Conv2D)            (None, 18, 18, 64)        36928     
+conv2d_4 (Conv2D)            (None, 8, 8, 32)          9248      
 _________________________________________________________________
-max_pooling2d_3 (MaxPooling2 (None, 9, 9, 64)          0         
+max_pooling2d_4 (MaxPooling2 (None, 4, 4, 32)          0         
 _________________________________________________________________
-dropout_3 (Dropout)          (None, 9, 9, 64)          0         
+dropout_4 (Dropout)          (None, 4, 4, 32)          0         
 _________________________________________________________________
-conv2d_7 (Conv2D)            (None, 7, 7, 128)         73856     
+flatten_1 (Flatten)          (None, 512)               0         
 _________________________________________________________________
-max_pooling2d_4 (MaxPooling2 (None, 3, 3, 128)         0         
+batch_normalization_1 (Batch (None, 512)               2048      
 _________________________________________________________________
-dropout_4 (Dropout)          (None, 3, 3, 128)         0         
+dense_1 (Dense)              (None, 64)                32832     
 _________________________________________________________________
-flatten_1 (Flatten)          (None, 1152)              0         
+dropout_5 (Dropout)          (None, 64)                0         
 _________________________________________________________________
-batch_normalization_1 (Batch (None, 1152)              4608      
+dense_2 (Dense)              (None, 32)                2080      
 _________________________________________________________________
-dense_1 (Dense)              (None, 256)               295168    
+dropout_6 (Dropout)          (None, 32)                0         
 _________________________________________________________________
-dropout_5 (Dropout)          (None, 256)               0         
-_________________________________________________________________
-dense_2 (Dense)              (None, 64)                16448     
-_________________________________________________________________
-dropout_6 (Dropout)          (None, 64)                0         
-_________________________________________________________________
-dense_3 (Dense)              (None, 12)                780       
+dense_3 (Dense)              (None, 12)                396       
 =================================================================
-Total params: 462,940
-Trainable params: 460,636
-Non-trainable params: 2,304
+Total params: 54,012
+Trainable params: 52,988
+Non-trainable params: 1,024
 _________________________________________________________________
-2018-08-01 11:05:15.512288: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
-2018-08-01 11:05:15.512313: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
-(3562, 12) (1188, 12)
-Train on 3562 samples, validate on 1188 samples
+2018-08-01 13:52:53.021083: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-01 13:52:53.021111: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+(3800, 12) (950, 12)
+Train on 3800 samples, validate on 950 samples
 Epoch 1/300
-217s - loss: 2.4867 - acc: 0.1173 - val_loss: 2.8248 - val_acc: 0.0867
+64s - loss: 2.4989 - acc: 0.0863 - val_loss: 2.4720 - val_acc: 0.1000
 Epoch 2/300
-218s - loss: 2.4078 - acc: 0.1387 - val_loss: 5.7427 - val_acc: 0.0572
+63s - loss: 2.4611 - acc: 0.0989 - val_loss: 2.4577 - val_acc: 0.0968
 Epoch 3/300
-216s - loss: 2.4151 - acc: 0.1291 - val_loss: 2.5494 - val_acc: 0.1094
+63s - loss: 2.4420 - acc: 0.1205 - val_loss: 2.4615 - val_acc: 0.1147
 Epoch 4/300
-217s - loss: 2.4014 - acc: 0.1364 - val_loss: 2.5114 - val_acc: 0.1195
+63s - loss: 2.4076 - acc: 0.1408 - val_loss: 2.4805 - val_acc: 0.1116
 Epoch 5/300
-229s - loss: 2.4006 - acc: 0.1412 - val_loss: 2.5682 - val_acc: 0.1372
+63s - loss: 2.3839 - acc: 0.1532 - val_loss: 2.4837 - val_acc: 0.1232
 Epoch 6/300
-252s - loss: 2.3942 - acc: 0.1474 - val_loss: 2.5418 - val_acc: 0.1481
+63s - loss: 2.3518 - acc: 0.1653 - val_loss: 2.4517 - val_acc: 0.1768
 Epoch 7/300
-234s - loss: 2.3897 - acc: 0.1449 - val_loss: 2.6129 - val_acc: 0.1296
+63s - loss: 2.3275 - acc: 0.1918 - val_loss: 2.4579 - val_acc: 0.1979
 Epoch 8/300
-234s - loss: 2.3802 - acc: 0.1426 - val_loss: 2.5362 - val_acc: 0.1330
+63s - loss: 2.2692 - acc: 0.2108 - val_loss: 2.3669 - val_acc: 0.2389
 Epoch 9/300
-234s - loss: 2.3947 - acc: 0.1482 - val_loss: 2.5437 - val_acc: 0.1279
+63s - loss: 2.2058 - acc: 0.2434 - val_loss: 2.2854 - val_acc: 0.2516
 Epoch 10/300
-233s - loss: 2.3894 - acc: 0.1227 - val_loss: 2.4853 - val_acc: 0.1380
+63s - loss: 2.1365 - acc: 0.2587 - val_loss: 2.2670 - val_acc: 0.2621
 Epoch 11/300
-231s - loss: 2.3714 - acc: 0.1426 - val_loss: 2.5141 - val_acc: 0.1254
+63s - loss: 2.0844 - acc: 0.2661 - val_loss: 2.1869 - val_acc: 0.2621
 Epoch 12/300
-233s - loss: 2.3758 - acc: 0.1499 - val_loss: 2.5162 - val_acc: 0.1355
+63s - loss: 2.0218 - acc: 0.2800 - val_loss: 2.1601 - val_acc: 0.2747
 Epoch 13/300
-233s - loss: 2.3825 - acc: 0.1398 - val_loss: 2.4938 - val_acc: 0.1313
+63s - loss: 1.9897 - acc: 0.2942 - val_loss: 2.1569 - val_acc: 0.2684
 Epoch 14/300
-234s - loss: 2.3772 - acc: 0.1435 - val_loss: 2.5970 - val_acc: 0.1313
+63s - loss: 1.9490 - acc: 0.3097 - val_loss: 2.0208 - val_acc: 0.3232
 Epoch 15/300
+62s - loss: 1.9177 - acc: 0.3150 - val_loss: 2.0311 - val_acc: 0.2947
+Epoch 16/300
+63s - loss: 1.8765 - acc: 0.3342 - val_loss: 2.1169 - val_acc: 0.2663
+Epoch 17/300
+63s - loss: 1.8441 - acc: 0.3429 - val_loss: 2.0389 - val_acc: 0.2842
+Epoch 18/300
+62s - loss: 1.7921 - acc: 0.3579 - val_loss: 2.1673 - val_acc: 0.2874
+Epoch 19/300
+63s - loss: 1.7690 - acc: 0.3755 - val_loss: 2.5068 - val_acc: 0.2884
+Epoch 20/300
+62s - loss: 1.7353 - acc: 0.3818 - val_loss: 2.1361 - val_acc: 0.3105
+Epoch 21/300
+62s - loss: 1.7159 - acc: 0.3876 - val_loss: 2.4992 - val_acc: 0.2905
+Epoch 22/300
+63s - loss: 1.6720 - acc: 0.4011 - val_loss: 2.1675 - val_acc: 0.3274
+Epoch 23/300
+63s - loss: 1.6639 - acc: 0.4153 - val_loss: 1.9985 - val_acc: 0.3232
+Epoch 24/300
+63s - loss: 1.6107 - acc: 0.4211 - val_loss: 1.9350 - val_acc: 0.3600
+Epoch 25/300
+63s - loss: 1.5939 - acc: 0.4392 - val_loss: 2.2176 - val_acc: 0.3484
+Epoch 26/300
+63s - loss: 1.5839 - acc: 0.4597 - val_loss: 2.1422 - val_acc: 0.3568
+Epoch 27/300
+63s - loss: 1.5395 - acc: 0.4645 - val_loss: 1.8786 - val_acc: 0.3747
+Epoch 28/300
+63s - loss: 1.5191 - acc: 0.4739 - val_loss: 2.1732 - val_acc: 0.3158
+Epoch 29/300
+63s - loss: 1.4951 - acc: 0.4742 - val_loss: 1.8751 - val_acc: 0.3979
+Epoch 30/300
+63s - loss: 1.4710 - acc: 0.4837 - val_loss: 1.6956 - val_acc: 0.4400
+Epoch 31/300
+63s - loss: 1.4562 - acc: 0.4884 - val_loss: 2.0427 - val_acc: 0.3453
+Epoch 32/300
+63s - loss: 1.4349 - acc: 0.4961 - val_loss: 2.1320 - val_acc: 0.3200
+Epoch 33/300
+63s - loss: 1.4052 - acc: 0.5082 - val_loss: 2.0158 - val_acc: 0.3347
+Epoch 34/300
+63s - loss: 1.3527 - acc: 0.5282 - val_loss: 1.8344 - val_acc: 0.4074
+Epoch 35/300
+62s - loss: 1.3617 - acc: 0.5313 - val_loss: 2.3049 - val_acc: 0.3232
+Epoch 36/300
+62s - loss: 1.3360 - acc: 0.5358 - val_loss: 1.8781 - val_acc: 0.4095
+Epoch 37/300
+62s - loss: 1.3385 - acc: 0.5347 - val_loss: 2.2192 - val_acc: 0.3326
+Epoch 38/300
+62s - loss: 1.3069 - acc: 0.5524 - val_loss: 1.7726 - val_acc: 0.4200
+Epoch 39/300
+62s - loss: 1.3045 - acc: 0.5553 - val_loss: 1.9493 - val_acc: 0.3684
+Epoch 40/300
+62s - loss: 1.2843 - acc: 0.5453 - val_loss: 1.9331 - val_acc: 0.3758
+Epoch 41/300
+62s - loss: 1.2661 - acc: 0.5503 - val_loss: 1.9280 - val_acc: 0.3821
+Epoch 42/300
+62s - loss: 1.2363 - acc: 0.5655 - val_loss: 1.7105 - val_acc: 0.4368
+Epoch 43/300
+62s - loss: 1.2524 - acc: 0.5684 - val_loss: 1.9770 - val_acc: 0.3832
+Epoch 44/300
+62s - loss: 1.2233 - acc: 0.5776 - val_loss: 1.9876 - val_acc: 0.3779
+Epoch 45/300
+62s - loss: 1.2147 - acc: 0.5703 - val_loss: 1.9716 - val_acc: 0.3726
+Epoch 46/300
+62s - loss: 1.1855 - acc: 0.5847 - val_loss: 1.5740 - val_acc: 0.4642
+Epoch 47/300
+62s - loss: 1.1622 - acc: 0.6089 - val_loss: 1.5839 - val_acc: 0.4800
+Epoch 48/300
+62s - loss: 1.1519 - acc: 0.6021 - val_loss: 1.6037 - val_acc: 0.4695
+Epoch 49/300
+62s - loss: 1.1634 - acc: 0.6011 - val_loss: 1.8685 - val_acc: 0.4200
+Epoch 50/300
+62s - loss: 1.1036 - acc: 0.6176 - val_loss: 1.6375 - val_acc: 0.4589
+Epoch 51/300
+62s - loss: 1.1311 - acc: 0.6142 - val_loss: 1.9670 - val_acc: 0.3853
+Epoch 52/300
+62s - loss: 1.1138 - acc: 0.6063 - val_loss: 1.4690 - val_acc: 0.5084
+Epoch 53/300
+62s - loss: 1.0970 - acc: 0.6239 - val_loss: 1.4428 - val_acc: 0.5168
+Epoch 54/300
+62s - loss: 1.0997 - acc: 0.6158 - val_loss: 1.4687 - val_acc: 0.4874
+Epoch 55/300
+62s - loss: 1.0721 - acc: 0.6213 - val_loss: 1.6514 - val_acc: 0.4611
+Epoch 56/300
+62s - loss: 1.0792 - acc: 0.6308 - val_loss: 1.5049 - val_acc: 0.5011
+Epoch 57/300
+62s - loss: 1.0545 - acc: 0.6403 - val_loss: 1.6065 - val_acc: 0.4600
+Epoch 58/300
+62s - loss: 1.0538 - acc: 0.6421 - val_loss: 1.3024 - val_acc: 0.5389
+Epoch 59/300
+62s - loss: 1.0416 - acc: 0.6382 - val_loss: 1.6401 - val_acc: 0.4726
+Epoch 60/300
+62s - loss: 1.0400 - acc: 0.6366 - val_loss: 1.3814 - val_acc: 0.5242
+Epoch 61/300
+62s - loss: 1.0212 - acc: 0.6476 - val_loss: 1.4794 - val_acc: 0.4947
+Epoch 62/300
+62s - loss: 1.0079 - acc: 0.6482 - val_loss: 1.4452 - val_acc: 0.5263
+Epoch 63/300
+62s - loss: 1.0053 - acc: 0.6605 - val_loss: 1.2777 - val_acc: 0.5589
+Epoch 64/300
+62s - loss: 0.9951 - acc: 0.6589 - val_loss: 1.2770 - val_acc: 0.5768
+Epoch 65/300
+62s - loss: 0.9771 - acc: 0.6695 - val_loss: 1.2000 - val_acc: 0.5811
+Epoch 66/300
+62s - loss: 0.9814 - acc: 0.6668 - val_loss: 1.4297 - val_acc: 0.5232
+Epoch 67/300
+62s - loss: 0.9857 - acc: 0.6624 - val_loss: 1.2021 - val_acc: 0.5832
+Epoch 68/300
+62s - loss: 0.9837 - acc: 0.6653 - val_loss: 1.5358 - val_acc: 0.4821
+Epoch 69/300
+62s - loss: 0.9524 - acc: 0.6763 - val_loss: 1.1480 - val_acc: 0.5968
+Epoch 70/300
+62s - loss: 0.9405 - acc: 0.6732 - val_loss: 1.3374 - val_acc: 0.5389
+Epoch 71/300
