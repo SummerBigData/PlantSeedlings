@@ -21,10 +21,10 @@ def PlotImgs(imgs, numImgs):
 	#plt.tight_layout()
 	plt.show()
 
-def create_mask_for_plant(image):
+def create_mask_for_plant(image, sensitivity): # 35
     image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    sensitivity = 35
+    #sensitivity = 35
     lower_hsv = np.array([60 - sensitivity, 100, 50])
     upper_hsv = np.array([60 + sensitivity, 255, 255])
 
@@ -74,11 +74,10 @@ imgPlot = np.zeros((40, 100, 100, 3))
 
 for i in range(20):
 	fmatted = (imgs[i]*255.0).astype(np.uint8)
-	mask = create_mask_for_plant( fmatted )
+	mask = create_mask_for_plant(fmatted , 35)
 	mask = mask.reshape((100, 100, 1))
 	maskRGB = np.concatenate(( mask, mask, mask), axis=2) / 255.0
-	print imgs[i].min(), imgs[i].max()
-	print mask.min(), mask.max()
+	print 'mask Sum', np.sum(maskRGB)
 	print ' '
 	imgPlot[i*2] = imgs[i]
 	imgPlot[i*2+1] = maskRGB
