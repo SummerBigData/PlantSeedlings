@@ -196,54 +196,7 @@ def Norm(mat, nMin, nMax):
 
 
 
-'''
 
-imgs, labels = getTrainDat(100)
-
-
-def PlotImgs(imgs, numImgs):
-	fig, axes = plt.subplots(nrows=1, ncols=numImgs)
-	ax = axes.ravel()
-	for i in range(imgs.shape[0]):
-		ax[i].imshow(imgs[i])
-		#ax[i].set_title(label[labels[i]])
-	#plt.tight_layout()
-	plt.show()
-
-imgsDC = np.zeros((imgs.shape))
-imgsHess = np.zeros((4, 100, 100, 3))
-
-from skimage.filters import hessian
-
-
-
-for i in range(4):
-	for x in range(100):
-		for y in range(100):
-			R = imgs[i, x, y, 0]
-			G = imgs[i, x, y, 1]
-			B = imgs[i, x, y, 2]
-			RGB = np.array([R, G, B])
-			avg = np.mean(RGB) - 0.5
-			imgs[i, x, y, :] -= avg
-
-	imgsHess[i, :, :, 0] = hessian(imgs[i, :, :, 1], beta1 = .1)
-
-
-
-
-import matplotlib.pyplot as plt
-imgPlot = np.zeros((5, 100, 100, 3))
-imgPlot[0, :, :, 0] = imgs[0, :, :, 0]
-imgPlot[1, :, :, 1] = imgs[0, :, :, 1]
-imgPlot[2, :, :, 2] = imgs[0, :, :, 2]
-imgPlot[3, :, :, :] = imgs[0]
-imgPlot[4, :, :, :] = imgsHess[0]
-
-PlotImgs(imgPlot, 5)
-
-
-'''
 
 
 
