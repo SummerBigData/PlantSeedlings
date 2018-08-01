@@ -110,7 +110,7 @@ def shuffleData(xtr, ytr, ind):
 def getcnn(imgsize):
 	from keras.models import Model
 	from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, Activation, Input
-	from keras.optimizers import Adam	
+	from keras.optimizers import Adam, SGD	
 	from keras.layers.normalization import BatchNormalization
 	#from keras import regularizers
 
@@ -156,7 +156,9 @@ def getcnn(imgsize):
 	output = Dense(12, activation="sigmoid")(d)
 
 	model = Model(input_1,  output)
-	optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+	
+	#optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+	optimizer = SGD(lr=1e-2, momentum=0.9, nesterov=True)
 	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 	model.summary()
 	return model
@@ -194,7 +196,7 @@ def Norm(mat, nMin, nMax):
 
 
 
-
+'''
 
 imgs, labels = getTrainDat(100)
 
@@ -241,7 +243,7 @@ imgPlot[4, :, :, :] = imgsHess[0]
 PlotImgs(imgPlot, 5)
 
 
-
+'''
 
 
 
