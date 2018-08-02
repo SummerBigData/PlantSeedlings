@@ -1,6 +1,6 @@
-#PBS -N runCnn8-2
-#PBS -l walltime=40:00:00
-#PBS -l nodes=1:ppn=1
+#PBS -N runtSNE8-2
+#PBS -l walltime=04:00:00
+#PBS -l nodes=1:ppn=12
 #PBS -l mem=32GB
 #PBS -j oe
 # uncomment if using qsub
@@ -21,4 +21,4 @@ source activate local
 
 #python -u icecnn.py $PBS_ARRAYID >& outIceCnn7-2_$PBS_ARRAYID.log
 # h, flip, iters, pseusize
-python -u cnn.py >& outCnn8-2.log
+python -u tSNE.py >& outtSNE8-2.log

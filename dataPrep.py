@@ -30,44 +30,37 @@ def GenTrainDat():
 			numLabel.append(i)
 	return imgs, numLabel
 
-'''
-def PlotImgs(imgs):
-	fig, axes = plt.subplots(nrows=12, ncols=8)
+def PlotImgs(imgs, nrows, ncols):
+	import matplotlib.pyplot as plt
+	fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
 	ax = axes.ravel()
-	for i in range(imgs.shape[0]):
+	for i in range(nrows*ncols):
 		ax[i].imshow(imgs[i])
+		ax[i].axes.get_yaxis().set_visible(False)
+		ax[i].axes.get_xaxis().set_visible(False)
 		#ax[i].set_title(label[labels[i]])
 	#plt.tight_layout()
 	plt.show()
 
-#PlotImgs(imgs, labels, 36)
-numSpecies = 8
-locations = np.zeros((12, numSpecies)).astype(int)
-
-for i in range(12):
-	locations[i] = np.where(labels == i)[0][0:numSpecies]
-
-imgPlot = np.zeros((12*numSpecies, imgs.shape[1], imgs.shape[1], 3))
-
-for i in range(12):
-	for j in range(numSpecies):
-		imgPlot[i*numSpecies+j] = imgs[locations[i, j]]
-
-PlotImgs(imgPlot)
-
-print locations
-'''
-
-def resizeTrainDat(dim):
+def resizeDat(datStr, dim):
 	from skimage.transform import resize
 
-	imgs = np.load('data/trainImgs'+'.npy')
-	imgResized = np.zeros(( len(imgs), dim, dim, 3))
-	
-	for i in range(len(imgs)):
-		imgResized[i] = resize(imgs[i], (dim, dim, 3))#, anti_aliasing=True)
+	imgs = np.load(datStr) #'data/trainImgs'+'.npy'
+	dimensions = len(imgs.shape)
+
+	if dimensions == 4:
+		imgResized = np.zeros(( len(imgs), dim, dim, 3))
+		for i in range(len(imgs)):
+			imgResized[i] = resize(imgs[i], (dim, dim, 3))#, anti_aliasing=True)
+
+	elif dimensions == 3:
+		imgResized = np.zeros((len(imgs), dim, dim))
+		for i in range(len(imgs)):
+			imgResized[i] = resize(imgs[i], (dim, dim))#, anti_aliasing=True)
 
 	return imgResized
+
+
 
 '''
 imgResized = resizeTrainDat(100)
@@ -77,15 +70,19 @@ np.save('data/trainImgsResized100', imgResized)
 def getTrainDat(dim):
 	saveStr = 'data/trainImgsResized'+str(dim)+'.npy'
 	if os.path.exists(saveStr):
+		print ' '
 		print 'Found data with correct size'
+		print ' '
 		imgs = np.load('data/trainImgsResized'+str(dim)+'.npy')
 		labels = np.load('data/trainLabels'+'.npy')
 	else:
+		print ' '
 		print 'Did not find data with correct size. Generating...'
 		print ' '
-		imgResized = resizeTrainDat(dim)
+		imgResized = resizeDat(dim)
 		np.save('data/trainImgsResized'+str(dim), imgResized)
 		print 'Done. Loading images'
+		print ' '
 		imgs = np.load('data/trainImgsResized'+str(dim)+'.npy')
 		labels = np.load('data/trainLabels'+'.npy')
 
@@ -117,7 +114,6 @@ def getcnn(imgsize):
 	p_activation = "relu"
 	input_1 = Input(shape=(imgsize, imgsize, 3))
 	#input_2 = Input(shape=[1], name="angle")
-
 	
 	convFilters = [16, 16, 32, 32]
 	
@@ -141,7 +137,7 @@ def getcnn(imgsize):
 	model = Model(input_1,  output)
 
 	#optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-	optimizer = Adam(lr=1e-4)
+	optimizer = Adam(lr=1e-4) #1e-4
 	#optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True)
 	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 	model.summary()
@@ -152,9 +148,9 @@ def getcnn(imgsize):
 def get_callbacks(filepath, patience=8):
 	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
 	
-	es = EarlyStopping('val_loss', patience=patience, mode="min")
+	es = EarlyStopping('loss', patience=patience, mode="min")
 	msave = ModelCheckpoint(filepath,monitor='val_loss',save_best_only=True,save_weights_only=True)
-	reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=7,min_lr=0.0005,mode="min")
+	reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=7,min_lr=5e-7,mode="min")
 	return [es, msave, reduce_lr]
 
 
@@ -188,10 +184,14 @@ def Norm(mat, nMin, nMax):
 	# Calculate the old min, max and convert to float values
 	Min = np.amin(mat).astype(float)
 	Max = np.amax(mat).astype(float)
-	nMin = nMin+0.0
-	nMax = nMax+0.0
-	# Calculate the new normalized matrix
-	normMat = ((mat - Min) / (Max - Min)) * (nMax - nMin) + nMin
+	if np.abs(Max - Min) < 1e-8:
+		print 'Max and Min less than 1e-8 apart'
+		return
+	else:
+		nMin = nMin+0.0
+		nMax = nMax+0.0
+		# Calculate the new normalized matrix
+		normMat = ((mat - Min) / (Max - Min)) * (nMax - nMin) + nMin
 	return normMat, Min, Max
 
 def getPlantMask(image, sensitivity): # 36

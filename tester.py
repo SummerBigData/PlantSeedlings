@@ -1,7 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from skimage.filters import hessian
+#from skimage.filters import hessian
 
 
 
@@ -12,23 +12,14 @@ import dataPrep
 
 
 
-def PlotImgs(imgs, nrows, ncols):
-	fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
-	ax = axes.ravel()
-	for i in range(imgs.shape[0]):
-		ax[i].imshow(imgs[i])
-		ax[i].axes.get_yaxis().set_visible(False)
-		ax[i].axes.get_xaxis().set_visible(False)
-		#ax[i].set_title(label[labels[i]])
-	#plt.tight_layout()
-	plt.show()
 
 
 
 
 
 
-
+dim = 100
+imgs, labels = dataPrep.getTrainDat(dim)
 
 '''
 imgsDC = np.zeros((imgs.shape))
@@ -59,11 +50,11 @@ imgPlot[4, :, :, :] = imgsHess[0]
 PlotImgs(imgPlot, 5)
 '''
 
+'''
 
-dim = 400
 numSplits = 3
 
-imgs, labels = dataPrep.getTrainDat(dim)
+
 numImgs = imgs.shape[0]
 
 #imgPlot = np.zeros(( (numSplits+1)*numImgs, dim, dim, 3))
@@ -83,17 +74,17 @@ for i in range(numImgs):
 	stampBW = np.concatenate((stampBW, stampBW, stampBW), axis = 2)
 	stampBW, _, _ = dataPrep.Norm(stampBW, 0, 1)
 	stampBWall[i] = stampBW[:, :, 0]
-	'''
+	
 	imgPlot[i*4] = imgs[i]
 	imgPlot[i*4+1] = maskRGB
 	imgPlot[i*4+2] = stamp
 	imgPlot[i*4+3] = stampBW
-	'''
+	
 #PlotImgs(imgPlot, numImgs, numSplits+1)
 
 np.save('data/trainImgsRes'+str(dim)+'stampBW'+str(dim), stampBWall)
 
-
-
+'''
+PlotImgs(imgs[155:], 1, 4)
 
 

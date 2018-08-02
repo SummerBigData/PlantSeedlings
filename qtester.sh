@@ -1,7 +1,7 @@
-#PBS -N runCnn8-2
-#PBS -l walltime=40:00:00
+#PBS -N runTester8-2
+#PBS -l walltime=04:00:00
 #PBS -l nodes=1:ppn=1
-#PBS -l mem=32GB
+#PBS -l mem=128GB
 #PBS -j oe
 # uncomment if using qsub
 if [ -z "$PBS_O_WORKDIR" ] 
@@ -21,4 +21,4 @@ source activate local
 
 #python -u icecnn.py $PBS_ARRAYID >& outIceCnn7-2_$PBS_ARRAYID.log
 # h, flip, iters, pseusize
-python -u cnn.py >& outCnn8-2.log
+python -u tester.py >& outTester8-2.log

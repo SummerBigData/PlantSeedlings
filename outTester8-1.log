@@ -1,0 +1,10 @@
+Did not find data with correct size. Generating...
+ 
+Traceback (most recent call last):
+  File "tester.py", line 66, in <module>
+    imgs, labels = dataPrep.getTrainDat(dim)
+  File "/users/PAS1383/osu10171/PlantSeedlings/dataPrep.py", line 86, in getTrainDat
+    imgResized = resizeTrainDat(dim)
+  File "/users/PAS1383/osu10171/PlantSeedlings/dataPrep.py", line 65, in resizeTrainDat
+    imgResized = np.zeros(( len(imgs), dim, dim, 3))
+MemoryError

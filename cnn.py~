@@ -8,13 +8,16 @@ from keras.utils.np_utils import to_categorical
 
 seed = 7
 dim = 100
-folds = 3
+folds = 5
 split = 0.2
-
+cutoff= 0.90
+epo = 500
+bsize = 25
+modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
 
 imgs, labels = dataPrep.getTrainDat(dim)
 x, y = dataPrep.shuffleData(imgs, labels, seed)
-xtrSp, ytrSp, xteSp, yteSp = DatSplit(x, y, split, folds)
+xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(x, y, split, folds)
 
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
@@ -24,55 +27,105 @@ label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common whea
 
 np.random.seed(seed)
 
-epo = 300
-bsize = 25
-saveStr = 'plainCnn/imgSize'+str(dim)+'Bsize'+str(bsize)
-saveStr = 'weights/' + saveStr + '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
+
+saveStr = modelSpecs+'/imgSize'+str(dim)+'Bsize'+str(bsize)+'k'
+saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
 
 # KERAS NEURAL NETWORK
 
-model = dataPrep.getcnn(dim)
-#os.remove('models/cnnModel' + str(dim) )
-model.save('models/cnnModel' + str(dim) )
+# Load or make Model
+modelStr = 'models/'+ modelSpecs + str(dim)
+#os.remove('models/cnnModel' + str(dim) )	# FIX
+if os.path.exists(modelStr):
+	print ' '
+	print 'Found model'
+	print ' '
+	from keras.models import load_model
+	model = load_model(modelStr)
+else:
+	print ' '
+	print 'No saved model. Generating...'
+	model = dataPrep.getcnn(dim)
+	model.save(modelStr)
+	print 'Created and saved model.'
+	print ' '
 
-callbacks = dataPrep.get_callbacks(filepath=saveStr, patience=40)
+# Initialize the vectors to hold the final performance. tr loss, tr percent, te loss, te percent
+results = np.zeros((folds, 4))
 
-# Need labels in matrix shape for the model, so convert to binary
-xtr, ytr = xtrSp[0], ytrSp[0]
-xte, yte = xteSp[0], yteSp[0]
 
-ytr_binary = to_categorical(ytr)
-yte_binary = to_categorical(yte)
-print ytr_binary.shape, yte_binary.shape
 
-# Fit the model
-model.fit(xtr, ytr_binary,
-	batch_size=bsize,
-	epochs=epo,
-	verbose=2,
-	validation_data=(xte, yte_binary),
-	callbacks=callbacks)
-
-# evaluate the model
-model.load_weights(saveStr)
-
-# Calculate the scores on the training and testing data
-results = np.zeros((2, 2))
-# Training
-scores = model.evaluate(xtr, ytr_binary, verbose=0)
-results[0, 0] = scores[0]
-results[0, 1] = scores[1]
-# Testing
-scores = model.evaluate(xte, yte_binary, verbose=0)
-results[1, 0] = scores[0]
-results[1, 1] = scores[1]
-
-#prediction = model.predict(unlab)
+# Do the following for each kfold
+for i in range(folds):
+	np.random.seed(seed+i)
+	# Get the appropriate data for the ith kfold from the data split
+	xtr, ytr = xtrSp[i], ytrSp[i]
+	xte, yte = xteSp[i], yteSp[i]
 	
-print 'Training percent for iter', 0, 'is', scores[0,1]*100, 'with log loss', scores[0,0]
-print 'Testing percent for iter', 0, 'is', scores[1,1]*100, 'with log loss', scores[1,0]
-print ' '
+	# Need labels in matrix shape for the model, so convert to binary
+	ytr_binary = to_categorical(ytr)
+	yte_binary = to_categorical(yte)
+
+	# The exact save string can be made, now we know the kfold
+	ithSaveStr = saveStr+str(i)+'.hdf5'
+	# Pull good weights or run the cnn
+	if os.path.exists(ithSaveStr):
+		print ' '
+		print 'Pulling kfold', i, 'from previous runs'
+		model.load_weights(ithSaveStr)
+		scores = model.evaluate(xte, yte_binary, verbose=0)
+		if scores[1] < cutoff:
+			os.remove(ithSaveStr)
+			print ' '
+			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
+			print ' '
+			callbacks = dataPrep.get_callbacks(filepath=ithSaveStr, patience=60)
+			# Fit the model
+			model.fit(xtr, ytr_binary,
+				batch_size=bsize,
+				epochs=epo,
+				verbose=2,
+				validation_data=(xte, yte_binary),
+				callbacks=callbacks)
+
+	else:
+		print 'No saved trial for kfold.'
+		callbacks = dataPrep.get_callbacks(filepath=ithSaveStr, patience=60)
+		# Fit the model
+		model.fit(xtr, ytr_binary,
+			batch_size=bsize,
+			epochs=epo,
+			verbose=2,
+			validation_data=(xte, yte_binary),
+			callbacks=callbacks)
+
+
+	# Evaluate the model.Calculate the scores on the training and testing data
+	model.load_weights(ithSaveStr)
+	# Training
+	scores = model.evaluate(xtr, ytr_binary, verbose=0)
+	results[i, 0] = scores[0]
+	results[i, 1] = scores[1]
+	# Testing
+	scores = model.evaluate(xte, yte_binary, verbose=0)
+	results[i, 2] = scores[0]
+	results[i, 3] = scores[1]
+
+	
+		
+	print 'Training loss for fold',i,'is', results[i,0],'with percent',results[i,1]*100
+	print 'Testing loss for fold',i,'is', results[i,2],'with percent',results[i,3]*100
+	print ' '
+	#prediction = model.predict(unlab)
+
+print 'Done training kfolds. Results:'
+print results
+
+
+
+
+
 
 
 
