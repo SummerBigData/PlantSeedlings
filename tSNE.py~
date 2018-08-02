@@ -127,11 +127,13 @@ ind = np.array([108, 155, 219, 222, 1436, 1564, 2250, 2302, 2346, 2358, 2382, 23
 		2893])
 
 imgs = dataPrep.resizeDat(datStr, 100)
+_, numlabels = dataPrep.getTrainDat(100)
 
 print ' '
 #print imgs.min(), imgs.max(),imgs.shape
 
 imgsToUse = np.zeros((imgs.shape[0] - len(ind), 100, 100))
+numlabelsToUse = np.zeros((imgs.shape[0] - len(ind) ))
 index = 0
 for i in range(imgs.shape[0]):
 	good = 1
@@ -141,9 +143,11 @@ for i in range(imgs.shape[0]):
 	
 	if good == 1:
 		imgsToUse[index] = imgs[i]
+		numlabelsToUse[index] = numlabels[i]
 		index += 1
 
 imgs = imgsToUse
+numlabels = numlabelsToUse.astype(int)
 
 imgsFlat = imgs.reshape(( imgs.shape[0], imgs.shape[1]**2 ))
 #imgs = resizeDat(datStr, dim)
@@ -182,13 +186,16 @@ def visualize_scatter(data_2d, label_ids, labelnames, figsize=(20,20)):
 	plt.show()
 
 
-def visualize_scatter_with_images(X_2d_data, images, figsize=(100,100), image_zoom=1):
+def visualize_scatter_with_images(X_2d_data, images, figsize=(45,45), image_zoom=1):
 	from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 	import matplotlib.pyplot as plt
+	from skimage.transform import resize
+
 	fig, ax = plt.subplots(figsize=figsize)
 	artists = []
 	for xy, i in zip(X_2d_data, images):
 		x0, y0 = xy
+		i = resize(i, (25, 25))
 		img = OffsetImage(i, zoom=image_zoom)
 		ab = AnnotationBbox(img, (x0, y0), xycoords='data', frameon=False)
 		artists.append(ax.add_artist(ab))
@@ -211,9 +218,8 @@ label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common whea
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
 	'Small-flowered Cranesbill', 'Sugar beet']
 
-_, numlabels = dataPrep.getTrainDat(100)
 
-numlabels = np.array(numlabels)
+
 '''
 orderedY = []
 for i in range(numlabels.shape[0]):
@@ -222,9 +228,12 @@ for i in range(numlabels.shape[0]):
 print orderedY[0:5]
 '''
 
-if os.path.exists('data/tSNEresScaled'):
-	tsne_result_scaled = np.load('data/tSNEresScaled')
+if os.path.exists('data/tSNEresScaled.npy'):
+	print 'Pulling saved run'
+	tsne_result_scaled = np.load('data/tSNEresScaled.npy')
+	print tsne_result_scaled.shape
 else:
+	print 'Running tsne'
 	tsne = TSNE(n_components=2, perplexity=40.0)
 	tsne_result = tsne.fit_transform(imgPCA)
 	tsne_result_scaled = StandardScaler().fit_transform(tsne_result)
@@ -232,6 +241,7 @@ else:
 
 
 visualize_scatter(tsne_result_scaled, numlabels, label )
+
 visualize_scatter_with_images(tsne_result_scaled, imgs, image_zoom=0.7)
 
 
