@@ -8,14 +8,16 @@ from keras.utils.np_utils import to_categorical
 
 seed = 7
 dim = 100
-folds = 5
+folds = 1
 split = 0.2
-cutoff= 0.90
+cutoff= 0.85
 epo = 500
 bsize = 25
 modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
 
 imgs, labels = dataPrep.getTrainDat(dim)
+unlab = dataPrep.getTestDat(dim)
+
 x, y = dataPrep.shuffleData(imgs, labels, seed)
 xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(x, y, split, folds)
 
@@ -53,7 +55,8 @@ else:
 
 # Initialize the vectors to hold the final performance. tr loss, tr percent, te loss, te percent
 results = np.zeros((folds, 4))
-
+# Also initialize the predictions matrix
+preds = np.zeros((folds, unlab.shape[0], 12))
 
 
 # Do the following for each kfold
@@ -105,23 +108,22 @@ for i in range(folds):
 	model.load_weights(ithSaveStr)
 	# Training
 	scores = model.evaluate(xtr, ytr_binary, verbose=0)
-	results[i, 0] = scores[0]
-	results[i, 1] = scores[1]
+	results[i, 0], results[i, 1] = scores[0], scores[1]
 	# Testing
 	scores = model.evaluate(xte, yte_binary, verbose=0)
-	results[i, 2] = scores[0]
-	results[i, 3] = scores[1]
+	results[i, 2], results[i, 3] = scores[0], scores[1]
+	# Unlabeled predictions
+	preds[i] = model.predict(unlab)
 
-	
-		
 	print 'Training loss for fold',i,'is', results[i,0],'with percent',results[i,1]*100
 	print 'Testing loss for fold',i,'is', results[i,2],'with percent',results[i,3]*100
 	print ' '
-	#prediction = model.predict(unlab)
+
+print 'Prediction dims', preds.shape
+np.save('predicts/'+modelSpecs +'/predFolds'+str(folds)+'split'+str(split)+'8-3', preds)
 
 print 'Done training kfolds. Results:'
 print results
-
 
 
 

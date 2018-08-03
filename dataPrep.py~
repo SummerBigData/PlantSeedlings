@@ -30,6 +30,10 @@ def GenTrainDat():
 			numLabel.append(i)
 	return imgs, numLabel
 
+
+
+
+
 def PlotImgs(imgs, nrows, ncols):
 	import matplotlib.pyplot as plt
 	fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
@@ -47,50 +51,72 @@ def resizeDat(datStr, dim):
 
 	imgs = np.load(datStr) #'data/trainImgs'+'.npy'
 	dimensions = len(imgs.shape)
-
-	if dimensions == 4:
-		imgResized = np.zeros(( len(imgs), dim, dim, 3))
-		for i in range(len(imgs)):
-			imgResized[i] = resize(imgs[i], (dim, dim, 3))#, anti_aliasing=True)
-
-	elif dimensions == 3:
+	if dimensions == 3:
 		imgResized = np.zeros((len(imgs), dim, dim))
 		for i in range(len(imgs)):
 			imgResized[i] = resize(imgs[i], (dim, dim))#, anti_aliasing=True)
+		return imgResized
+	else:
+		imgResized = np.zeros(( len(imgs), dim, dim, 3))
+		for i in range(len(imgs)):
+			imgResized[i] = resize(imgs[i], (dim, dim, 3))#, anti_aliasing=True)
+		return imgResized
+	return
 
-	return imgResized
+def GenTestDat():
+	from PIL import Image
 
-
-
-'''
-imgResized = resizeTrainDat(100)
-np.save('data/trainImgsResized100', imgResized)
-'''
+	imgs =[]
+	folder = 'data/test'
+	for filename in os.listdir(folder):
+		img = Image.open(folder+'/'+filename)
+		img = np.array(img)
+		imgs.append(img)
+	np.save('data/testImgs', imgs)
+	imgRes = resizeDat('data/testImgs.npy', 400)
+	np.save('data/testImgsResized400', imgRes)
+	return
 
 def getTrainDat(dim):
 	saveStr = 'data/trainImgsResized'+str(dim)+'.npy'
 	if os.path.exists(saveStr):
 		print ' '
-		print 'Found data with correct size'
+		print 'Found train data with correct size'
 		print ' '
-		imgs = np.load('data/trainImgsResized'+str(dim)+'.npy')
+		imgs = np.load(saveStr)
 		labels = np.load('data/trainLabels'+'.npy')
 	else:
 		print ' '
-		print 'Did not find data with correct size. Generating...'
+		print 'Did not find train data with correct size. Generating...'
 		print ' '
-		imgResized = resizeDat(dim)
+		imgResized = resizeDat('data/trainImgs.npy',dim)
 		np.save('data/trainImgsResized'+str(dim), imgResized)
-		print 'Done. Loading images'
+		print 'Done. Loading train images'
 		print ' '
-		imgs = np.load('data/trainImgsResized'+str(dim)+'.npy')
+		imgs = np.load(saveStr)
 		labels = np.load('data/trainLabels'+'.npy')
-
 	return imgs, labels.astype(int)
 
+def getTestDat(dim):
+	saveStr = 'data/testImgsResized'+str(dim)+'.npy'
+	if os.path.exists(saveStr):
+		print ' '
+		print 'Found test data with correct size'
+		print ' '
+		unlab = np.load(saveStr)
+	else:
+		print ' '
+		print 'Did not find test data with correct size. Generating...'
+		print ' '
+		imgResized = resizeDat('data/testImgs.npy',dim)
+		np.save('data/testImgsResized'+str(dim), imgResized)
+		print 'Done. Loading test images'
+		print ' '
+		imgs = np.load(saveStr)
+	return imgs
 
 def shuffleData(xtr, ytr, ind):
-	np.random.seed(0)
+	np.random.seed(ind)
 	imgsize = xtr.shape[1]
 	# Linearize the x features and columnize the y data
 	xtr = xtr.reshape((xtr.shape[0], imgsize*imgsize*3))
@@ -132,7 +158,7 @@ def getcnn(imgsize):
 		d = Dense(denseFilters[i], activation=p_activation)(d)
 		d = Dropout(0.2)(d)
 	
-	output = Dense(12, activation="sigmoid")(d)
+	output = Dense(12, activation="softmax")(d)
 
 	model = Model(input_1,  output)
 
