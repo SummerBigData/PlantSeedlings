@@ -67,15 +67,19 @@ def GenTestDat():
 	from PIL import Image
 
 	imgs =[]
+	names = []
 	folder = 'data/test'
 	for filename in os.listdir(folder):
 		img = Image.open(folder+'/'+filename)
 		img = np.array(img)
 		imgs.append(img)
+		names.append(filename)
 	np.save('data/testImgs', imgs)
+	np.save('data/testNames', names)
 	imgRes = resizeDat('data/testImgs.npy', 400)
 	np.save('data/testImgsResized400', imgRes)
 	return
+
 
 def getTrainDat(dim):
 	saveStr = 'data/trainImgsResized'+str(dim)+'.npy'
