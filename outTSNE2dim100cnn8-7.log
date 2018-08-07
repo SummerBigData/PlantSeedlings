@@ -1,0 +1,112 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+ 
+Found train data with correct size
+ 
+ 
+Found test data with correct size
+ 
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+ 
+No saved model. Generating...
+____________________________________________________________________________________________________
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+input_1 (InputLayer)             (None, 100, 100, 3)   0                                            
+____________________________________________________________________________________________________
+conv2d_1 (Conv2D)                (None, 98, 98, 16)    448         input_1[0][0]                    
+____________________________________________________________________________________________________
+max_pooling2d_1 (MaxPooling2D)   (None, 49, 49, 16)    0           conv2d_1[0][0]                   
+____________________________________________________________________________________________________
+dropout_1 (Dropout)              (None, 49, 49, 16)    0           max_pooling2d_1[0][0]            
+____________________________________________________________________________________________________
+conv2d_2 (Conv2D)                (None, 47, 47, 16)    2320        dropout_1[0][0]                  
+____________________________________________________________________________________________________
+max_pooling2d_2 (MaxPooling2D)   (None, 23, 23, 16)    0           conv2d_2[0][0]                   
+____________________________________________________________________________________________________
+dropout_2 (Dropout)              (None, 23, 23, 16)    0           max_pooling2d_2[0][0]            
+____________________________________________________________________________________________________
+conv2d_3 (Conv2D)                (None, 21, 21, 32)    4640        dropout_2[0][0]                  
+____________________________________________________________________________________________________
+max_pooling2d_3 (MaxPooling2D)   (None, 10, 10, 32)    0           conv2d_3[0][0]                   
+____________________________________________________________________________________________________
+dropout_3 (Dropout)              (None, 10, 10, 32)    0           max_pooling2d_3[0][0]            
+____________________________________________________________________________________________________
+conv2d_4 (Conv2D)                (None, 8, 8, 32)      9248        dropout_3[0][0]                  
+____________________________________________________________________________________________________
+max_pooling2d_4 (MaxPooling2D)   (None, 4, 4, 32)      0           conv2d_4[0][0]                   
+____________________________________________________________________________________________________
+dropout_4 (Dropout)              (None, 4, 4, 32)      0           max_pooling2d_4[0][0]            
+____________________________________________________________________________________________________
+flatten_1 (Flatten)              (None, 512)           0           dropout_4[0][0]                  
+____________________________________________________________________________________________________
+batch_normalization_1 (BatchNorm (None, 512)           2048        flatten_1[0][0]                  
+____________________________________________________________________________________________________
+input_2 (InputLayer)             (None, 100)           0                                            
+____________________________________________________________________________________________________
+concatenate_1 (Concatenate)      (None, 612)           0           batch_normalization_1[0][0]      
+                                                                   input_2[0][0]                    
+____________________________________________________________________________________________________
+dense_1 (Dense)                  (None, 64)            39232       concatenate_1[0][0]              
+____________________________________________________________________________________________________
+dropout_5 (Dropout)              (None, 64)            0           dense_1[0][0]                    
+____________________________________________________________________________________________________
+dense_2 (Dense)                  (None, 32)            2080        dropout_5[0][0]                  
+____________________________________________________________________________________________________
+dropout_6 (Dropout)              (None, 32)            0           dense_2[0][0]                    
+____________________________________________________________________________________________________
+dense_3 (Dense)                  (None, 12)            396         dropout_6[0][0]                  
+====================================================================================================
+Total params: 60,412
+Trainable params: 59,388
+Non-trainable params: 1,024
+____________________________________________________________________________________________________
+2018-08-07 17:34:32.394595: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-07 17:34:32.394934: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+Created and saved model.
+ 
+No saved trial for kfold.
+Train on 3800 samples, validate on 950 samples
+Epoch 1/500
+64s - loss: 2.6187 - acc: 0.0926 - val_loss: 2.4777 - val_acc: 0.1095
+Epoch 2/500
+63s - loss: 2.4812 - acc: 0.1266 - val_loss: 2.4432 - val_acc: 0.1421
+Epoch 3/500
+63s - loss: 2.4139 - acc: 0.1611 - val_loss: 2.4143 - val_acc: 0.1453
+Epoch 4/500
+63s - loss: 2.3704 - acc: 0.1837 - val_loss: 2.3765 - val_acc: 0.1737
+Epoch 5/500
+63s - loss: 2.3257 - acc: 0.2139 - val_loss: 2.3306 - val_acc: 0.2042
+Epoch 6/500
+63s - loss: 2.2863 - acc: 0.2250 - val_loss: 2.2804 - val_acc: 0.2516
+Epoch 7/500
+63s - loss: 2.2173 - acc: 0.2550 - val_loss: 2.2095 - val_acc: 0.2800
+Epoch 8/500
+63s - loss: 2.1506 - acc: 0.2653 - val_loss: 2.1035 - val_acc: 0.3147
+Epoch 9/500
+63s - loss: 2.0487 - acc: 0.2997 - val_loss: 1.9681 - val_acc: 0.3558
+Epoch 10/500
+63s - loss: 1.9320 - acc: 0.3429 - val_loss: 1.8571 - val_acc: 0.3758
+Epoch 11/500
+63s - loss: 1.8578 - acc: 0.3732 - val_loss: 1.8494 - val_acc: 0.3958
+Epoch 12/500
+63s - loss: 1.7600 - acc: 0.4087 - val_loss: 1.7423 - val_acc: 0.4274
+Epoch 13/500
+63s - loss: 1.7067 - acc: 0.4261 - val_loss: 1.7225 - val_acc: 0.4379
+Epoch 14/500
+63s - loss: 1.6480 - acc: 0.4516 - val_loss: 1.7520 - val_acc: 0.4537
+Epoch 15/500
+63s - loss: 1.6083 - acc: 0.4605 - val_loss: 1.6330 - val_acc: 0.4800
+Epoch 16/500
+63s - loss: 1.5333 - acc: 0.4834 - val_loss: 1.4744 - val_acc: 0.5526
+Epoch 17/500
+63s - loss: 1.5015 - acc: 0.4971 - val_loss: 1.5776 - val_acc: 0.5032
+Epoch 18/500
+63s - loss: 1.4446 - acc: 0.5061 - val_loss: 1.5494 - val_acc: 0.4895
+Epoch 19/500
+63s - loss: 1.4329 - acc: 0.5066 - val_loss: 1.5899 - val_acc: 0.4947
+Epoch 20/500

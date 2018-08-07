@@ -61,7 +61,6 @@ def resizeDat(datStr, dim):
 		for i in range(len(imgs)):
 			imgResized[i] = resize(imgs[i], (dim, dim, 3))#, anti_aliasing=True)
 		return imgResized
-	return
 
 def GenTestDat():
 	from PIL import Image
@@ -122,16 +121,29 @@ def getTestDat(dim):
 def shuffleData(xtr, ytr, ind):
 	np.random.seed(ind)
 	imgsize = xtr.shape[1]
-	# Linearize the x features and columnize the y data
-	xtr = xtr.reshape((xtr.shape[0], imgsize*imgsize*3))
-	ytr = ytr.reshape((xtr.shape[0], 1))
-	# Stick them together and shuffle them
-	augdat = np.hstack((ytr, xtr))	#(2000, 16876)
-	np.random.shuffle(augdat)
-	# Seperate augdat and reshape back to original dimensions
-	xtrshuffle = augdat[:, 1:].reshape((xtr.shape[0], imgsize, imgsize, 3))
-	ytrshuffle = np.ravel(augdat[:, 0])
-	return xtrshuffle, ytrshuffle.astype(int)
+	dims = len(xtr.shape)
+	if dims == 4:
+		# Linearize the x features and columnize the y data
+		xtr = xtr.reshape((xtr.shape[0], imgsize*imgsize*3))
+		ytr = ytr.reshape((xtr.shape[0], 1))
+		# Stick them together and shuffle them
+		augdat = np.hstack((ytr, xtr))	#(2000, 16876)
+		np.random.shuffle(augdat)
+		# Seperate augdat and reshape back to original dimensions
+		xtrshuffle = augdat[:, 1:].reshape((xtr.shape[0], imgsize, imgsize, 3))
+		ytrshuffle = np.ravel(augdat[:, 0])
+		return xtrshuffle, ytrshuffle.astype(int)
+	else:
+		# Linearize the x features and columnize the y data
+		xtr = xtr.reshape((xtr.shape[0], imgsize*imgsize))
+		ytr = ytr.reshape((xtr.shape[0], 1))
+		# Stick them together and shuffle them
+		augdat = np.hstack((ytr, xtr))	#(2000, 16876)
+		np.random.shuffle(augdat)
+		# Seperate augdat and reshape back to original dimensions
+		xtrshuffle = augdat[:, 1:].reshape((xtr.shape[0], imgsize, imgsize))
+		ytrshuffle = np.ravel(augdat[:, 0])
+		return xtrshuffle, ytrshuffle.astype(int)
 
 
 def getcnn(imgsize):
@@ -143,6 +155,45 @@ def getcnn(imgsize):
 
 	p_activation = "relu"
 	input_1 = Input(shape=(imgsize, imgsize, 3))
+	#input_2 = Input(shape=[1], name="angle")
+	
+	convFilters = [16, 16, 32, 32]
+	
+	c = input_1
+	for i in range(len(convFilters)):
+		c = Conv2D(convFilters[i], kernel_size = (3,3), activation=p_activation) (c)
+		c = MaxPooling2D((2,2)) (c)
+		c = Dropout(0.2)(c)
+
+	d = Flatten()(c)
+	d = BatchNormalization()(d)
+
+	denseFilters = [64, 64, 32]
+	
+	for i in range(len(denseFilters)):
+		d = Dense(denseFilters[i], activation=p_activation)(d)
+		d = Dropout(0.2)(d)
+	
+	output = Dense(12, activation="softmax")(d)
+
+	model = Model(input_1,  output)
+
+	#optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+	optimizer = Adam(lr=1e-4) #1e-4
+	#optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True)
+	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+	model.summary()
+	return model
+
+def getTsneCnn(imgsize):
+	from keras.models import Model
+	from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, Activation, Input
+	from keras.optimizers import Adam, SGD	
+	from keras.layers.normalization import BatchNormalization
+	#from keras import regularizers
+
+	p_activation = "relu"
+	input_1 = Input(shape=(imgsize, imgsize, 1))
 	#input_2 = Input(shape=[1], name="angle")
 	
 	convFilters = [16, 16, 32, 32]
@@ -173,6 +224,48 @@ def getcnn(imgsize):
 	model.summary()
 	return model
 
+def getTsne2Cnn(imgsize, pcasize):
+	from keras.models import Model
+	from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, Activation, Input
+	from keras.layers import concatenate
+	from keras.optimizers import Adam, SGD	
+	from keras.layers.normalization import BatchNormalization
+	#from keras import regularizers
+
+	p_activation = "relu"
+	input_1 = Input(shape=(imgsize, imgsize, 3))
+	input_2 = Input(shape=(pcasize,))
+	#input_2 = Input(shape=[1], name="angle")
+	
+	convFilters = [16, 16, 32, 32]
+	
+	c = input_1
+	for i in range(len(convFilters)):
+		c = Conv2D(convFilters[i], kernel_size = (3,3), activation=p_activation) (c)
+		c = MaxPooling2D((2,2)) (c)
+		c = Dropout(0.2)(c)
+
+	d = Flatten()(c)
+	d = BatchNormalization()(d)
+
+	d = concatenate([d, input_2])
+
+	denseFilters = [64, 32]
+	
+	for i in range(len(denseFilters)):
+		d = Dense(denseFilters[i], activation=p_activation)(d)
+		d = Dropout(0.2)(d)
+	
+	output = Dense(12, activation="softmax")(d)
+
+	model = Model([input_1, input_2],  output)
+
+	#optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+	optimizer = Adam(lr=1e-4) #1e-4
+	#optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True)
+	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+	model.summary()
+	return model
 
 # We choose a high patience so the algorthim keeps searching even after finding a maximum
 def get_callbacks(filepath, patience=8):
@@ -207,8 +300,29 @@ def DatSplit(x, y, testSplit, folds): # split example: 0.25 for  3/1 train/test 
 		ytrSplit.append( y[train_index] )
 		yteSplit.append( y[test_index] )
 
-
 	return xtrSplit, ytrSplit, xteSplit, yteSplit
+
+def DatSplitStamp(x, xst, y, testSplit, folds): # split example: 0.25 for  3/1 train/test split
+	from sklearn.cross_validation import StratifiedShuffleSplit
+	sss = StratifiedShuffleSplit(y, folds, test_size=testSplit, random_state=0)
+	
+	xtrSplit = []
+	xteSplit = []
+	xstTrSplit = []
+	xstTeSplit = []
+	ytrSplit = []
+	yteSplit = []
+	for train_index, test_index in sss:
+		xtrSplit.append( x[train_index] )
+		xteSplit.append( x[test_index] )
+
+		xstTrSplit.append( xst[train_index] )
+		xstTeSplit.append( xst[test_index] )
+	
+		ytrSplit.append( y[train_index] )
+		yteSplit.append( y[test_index] )
+
+	return xtrSplit, xstTrSplit, ytrSplit, xteSplit, xstTeSplit, yteSplit
 
 def Norm(mat, nMin, nMax):
 	# Calculate the old min, max and convert to float values
@@ -242,7 +356,7 @@ def getPlantMask(image, sensitivity): # 36
 		return image_sharp
 
 	sharpmask = sharpen_image(mask) / 255.0
-	return sharpmask
+	return sharpmask.astype(int)
 
 
 

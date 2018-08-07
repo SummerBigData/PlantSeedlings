@@ -13,7 +13,14 @@ split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
-modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
+modelSpecs = 'cnnConv-16-16-32-32-Dense-64-64-32-12'
+if not os.path.exists('weights/' + modelSpecs):
+	os.makedirs('weights/' + modelSpecs)
+	os.makedirs('predicts/' + modelSpecs)
+
+
+
+
 
 imgs, labels = dataPrep.getTrainDat(dim)
 unlab = dataPrep.getTestDat(dim)

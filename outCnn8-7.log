@@ -1,0 +1,153 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+ 
+Found train data with correct size
+ 
+ 
+Found test data with correct size
+ 
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+ 
+No saved model. Generating...
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         (None, 100, 100, 3)       0         
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 98, 98, 16)        448       
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 49, 49, 16)        0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 49, 49, 16)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 47, 47, 16)        2320      
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 23, 23, 16)        0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 23, 23, 16)        0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 21, 21, 32)        4640      
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 10, 10, 32)        0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 10, 10, 32)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 8, 8, 32)          9248      
+_________________________________________________________________
+max_pooling2d_4 (MaxPooling2 (None, 4, 4, 32)          0         
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 4, 4, 32)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 512)               0         
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 512)               2048      
+_________________________________________________________________
+dense_1 (Dense)              (None, 64)                32832     
+_________________________________________________________________
+dropout_5 (Dropout)          (None, 64)                0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dropout_6 (Dropout)          (None, 64)                0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 32)                2080      
+_________________________________________________________________
+dropout_7 (Dropout)          (None, 32)                0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 12)                396       
+=================================================================
+Total params: 58,172
+Trainable params: 57,148
+Non-trainable params: 1,024
+_________________________________________________________________
+2018-08-07 17:09:00.075484: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-07 17:09:00.075518: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+Created and saved model.
+ 
+No saved trial for kfold.
+Train on 3800 samples, validate on 950 samples
+Epoch 1/500
+68s - loss: 2.6001 - acc: 0.0803 - val_loss: 2.4784 - val_acc: 0.1337
+Epoch 2/500
+66s - loss: 2.5134 - acc: 0.0863 - val_loss: 2.4689 - val_acc: 0.1379
+Epoch 3/500
+66s - loss: 2.4770 - acc: 0.1013 - val_loss: 2.4552 - val_acc: 0.1316
+Epoch 4/500
+66s - loss: 2.4608 - acc: 0.1182 - val_loss: 2.4526 - val_acc: 0.1337
+Epoch 5/500
+66s - loss: 2.4320 - acc: 0.1268 - val_loss: 2.4708 - val_acc: 0.1263
+Epoch 6/500
+66s - loss: 2.4239 - acc: 0.1371 - val_loss: 2.5011 - val_acc: 0.1211
+Epoch 7/500
+66s - loss: 2.4095 - acc: 0.1397 - val_loss: 2.5178 - val_acc: 0.1158
+Epoch 8/500
+66s - loss: 2.3935 - acc: 0.1566 - val_loss: 2.5249 - val_acc: 0.1158
+Epoch 9/500
+66s - loss: 2.3885 - acc: 0.1550 - val_loss: 2.5439 - val_acc: 0.1126
+Epoch 10/500
+66s - loss: 2.3555 - acc: 0.1761 - val_loss: 2.5481 - val_acc: 0.1168
+Epoch 11/500
+66s - loss: 2.3383 - acc: 0.2013 - val_loss: 2.4963 - val_acc: 0.1211
+Epoch 12/500
+66s - loss: 2.2691 - acc: 0.2268 - val_loss: 2.4789 - val_acc: 0.1284
+Epoch 13/500
+66s - loss: 2.1935 - acc: 0.2624 - val_loss: 2.3592 - val_acc: 0.1716
+Epoch 14/500
+66s - loss: 2.1982 - acc: 0.2629 - val_loss: 2.3462 - val_acc: 0.1726
+Epoch 15/500
+66s - loss: 2.1671 - acc: 0.2684 - val_loss: 2.3042 - val_acc: 0.1958
+Epoch 16/500
+66s - loss: 2.1639 - acc: 0.2661 - val_loss: 2.2889 - val_acc: 0.1958
+Epoch 17/500
+66s - loss: 2.1351 - acc: 0.2826 - val_loss: 2.2421 - val_acc: 0.2211
+Epoch 18/500
+66s - loss: 2.1155 - acc: 0.2826 - val_loss: 2.2090 - val_acc: 0.2421
+Epoch 19/500
+66s - loss: 2.1043 - acc: 0.2871 - val_loss: 2.1984 - val_acc: 0.2547
+Epoch 20/500
+66s - loss: 2.1006 - acc: 0.2863 - val_loss: 2.2429 - val_acc: 0.2263
+Epoch 21/500
+66s - loss: 2.0850 - acc: 0.3016 - val_loss: 2.1598 - val_acc: 0.2674
+Epoch 22/500
+66s - loss: 2.0708 - acc: 0.3042 - val_loss: 2.1536 - val_acc: 0.2832
+Epoch 23/500
+66s - loss: 2.0570 - acc: 0.3024 - val_loss: 2.1532 - val_acc: 0.2895
+Epoch 24/500
+66s - loss: 2.0483 - acc: 0.3050 - val_loss: 2.1284 - val_acc: 0.2989
+Epoch 25/500
+66s - loss: 2.0394 - acc: 0.3103 - val_loss: 2.1047 - val_acc: 0.2863
+Epoch 26/500
+66s - loss: 2.0215 - acc: 0.3174 - val_loss: 2.1250 - val_acc: 0.2905
+Epoch 27/500
+66s - loss: 2.0171 - acc: 0.3137 - val_loss: 2.1405 - val_acc: 0.3053
+Epoch 28/500
+66s - loss: 2.0132 - acc: 0.3063 - val_loss: 2.0861 - val_acc: 0.3126
+Epoch 29/500
+66s - loss: 1.9863 - acc: 0.3221 - val_loss: 2.0982 - val_acc: 0.3168
+Epoch 30/500
+66s - loss: 1.9839 - acc: 0.3295 - val_loss: 2.0951 - val_acc: 0.3147
+Epoch 31/500
+66s - loss: 1.9767 - acc: 0.3242 - val_loss: 2.0871 - val_acc: 0.3168
+Epoch 32/500
+66s - loss: 1.9500 - acc: 0.3279 - val_loss: 2.0500 - val_acc: 0.3221
+Epoch 33/500
+66s - loss: 1.9667 - acc: 0.3303 - val_loss: 2.0570 - val_acc: 0.3168
+Epoch 34/500
+66s - loss: 1.9551 - acc: 0.3374 - val_loss: 2.1026 - val_acc: 0.3200
+Epoch 35/500
+66s - loss: 1.9474 - acc: 0.3284 - val_loss: 2.0259 - val_acc: 0.3200
+Epoch 36/500
+66s - loss: 1.9392 - acc: 0.3318 - val_loss: 2.1009 - val_acc: 0.3211
+Epoch 37/500
+66s - loss: 1.9303 - acc: 0.3321 - val_loss: 2.0655 - val_acc: 0.3284
+Epoch 38/500
+66s - loss: 1.9393 - acc: 0.3434 - val_loss: 2.0884 - val_acc: 0.3189
+Epoch 39/500
+66s - loss: 1.9078 - acc: 0.3437 - val_loss: 2.0802 - val_acc: 0.3274
+Epoch 40/500
+66s - loss: 1.9033 - acc: 0.3603 - val_loss: 2.0289 - val_acc: 0.3284
+Epoch 41/500
+65s - loss: 1.8731 - acc: 0.3603 - val_loss: 2.0284 - val_acc: 0.3411
+Epoch 42/500

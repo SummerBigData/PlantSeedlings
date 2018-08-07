@@ -3,40 +3,99 @@ import numpy as np
 import dataPrep
 import os
 import matplotlib.pyplot as plt
-from skimage.transform import resize
 from keras.utils.np_utils import to_categorical
 
+'''
+dim = 200
+# Get the statistics of an image or many images
+def GetStats(imgs, oneImg):	# oneImg is 1 if true, 0 if false
+	imgsM = np.zeros((3))
+	imgsS = np.zeros((3))
+	if oneImg == 1:
+		for i in range(3):
+			imgsM[i] = np.mean(imgs[:,:,i])
+			imgsS[i] = np.std(imgs[:,:,i])
+	else:
+		for i in range(3):
+			imgsM[i] = np.mean(imgs[:,:,:,i])
+			imgsS[i] = np.std(imgs[:,:,:,i])	
+	return imgsM, imgsS
+
+def FixColor(img, means, stds):
+	wrongM, wrongS = GetStats(img, 1)
+	fixedImg = np.zeros((img.shape))
+	for i in range(3):
+		temp = (img[:,:,i] - wrongM[i]) / wrongS[i]
+		fixedImg[:,:,i] = temp * stds[i] + means[i]
+	return fixedImg
+
+
+
+
+#imgs, labels = dataPrep.getTrainDat(dim)
+unlab = dataPrep.getTestDat(dim)
+imgs = unlab
+#imgs, labels = dataPrep.shuffleData(imgs, labels, seed)
+
+imgsMean, imgsStd = GetStats(imgs, 0)
+
+imgMask = np.zeros((imgs.shape[0], dim, dim))
+imgZero = []
+wrongImgs = []
+for i in range(imgs.shape[0]):	# FIX
+	imgMask[i] = dataPrep.getPlantMask(imgs[i], 36)
+	if imgMask[i].max() < 0.001:
+		print 'Fixed here:' , i
+		wrongImgs.append(i)
+		imgs[i] = FixColor(imgs[i], imgsMean, imgsStd)
+		imgMask[i] = dataPrep.getPlantMask(imgs[i], 36)
+
+stampImgs = np.zeros(imgMask.shape)
+
+for i in range(imgs.shape[0]):
+	avgImg = (imgs[i,:,:,0] + imgs[i,:,:,1] + imgs[i,:,:,2]) / 3.0
+	stampImgs[i] = np.multiply(avgImg, imgMask[i])
+
+
+np.save('data/testImgsRes400stampBW'+str(dim)+'Fixed.npy', stampImgs)
+print 'Done making stamp'
+'''
+
+
 seed = 7
-dim = 100
-folds = 20
+dim = 200
+folds = 10
 split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
-modelSpecs = 'cnnConv-16-16-32-32-Dense-64- 64-32-12'
-if not os.path.exists('weights/' + modelSpecs):
-	os.makedirs('weights/' + modelSpecs)
-	os.makedirs('predicts/' + modelSpecs)
+modelSpecs = 'tsneCnnConv-16-16-32-32-Dense-64-32-12'
 
 
 
-
-
+# Get the usual images
 imgs, labels = dataPrep.getTrainDat(dim)
 unlab = dataPrep.getTestDat(dim)
 
+# Get the stamp images and shufle them
+#imgs = dataPrep.resizeDat('data/trainImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
 x, y = dataPrep.shuffleData(imgs, labels, seed)
+
+#unlab = dataPrep.resizeDat('data/testImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
+
+# Get the list of data for kfold testing
 xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(x, y, split, folds)
 
+# Labels in case they are needed
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
 	'Small-flowered Cranesbill', 'Sugar beet']
 
 
-
+# Pick a seed
 np.random.seed(seed)
 
-
+# Create the save string used for the weights
 saveStr = modelSpecs+'/imgSize'+str(dim)+'Bsize'+str(bsize)+'k'
 saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
@@ -45,7 +104,7 @@ saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
 # Load or make Model
 modelStr = 'models/'+ modelSpecs + str(dim)
-#os.remove('models/cnnModel' + str(dim) )	# FIX
+#os.remove(modelStr)	# FIX
 if os.path.exists(modelStr):
 	print ' '
 	print 'Found model'
@@ -55,7 +114,7 @@ if os.path.exists(modelStr):
 else:
 	print ' '
 	print 'No saved model. Generating...'
-	model = dataPrep.getcnn(dim)
+	model = dataPrep.getTsneCnn(dim)
 	model.save(modelStr)
 	print 'Created and saved model.'
 	print ' '
@@ -72,7 +131,8 @@ for i in range(folds):
 	# Get the appropriate data for the ith kfold from the data split
 	xtr, ytr = xtrSp[i], ytrSp[i]
 	xte, yte = xteSp[i], yteSp[i]
-	
+	xtr = xtr.reshape((xtr.shape[0], dim, dim, 1))
+	xte = xte.reshape((xte.shape[0], dim, dim, 1))
 	# Need labels in matrix shape for the model, so convert to binary
 	ytr_binary = to_categorical(ytr)
 	yte_binary = to_categorical(yte)
@@ -127,7 +187,7 @@ for i in range(folds):
 	print ' '
 
 print 'Prediction dims', preds.shape
-np.save('predicts/'+modelSpecs +'/predFolds'+str(folds)+'split'+str(split)+'8-3', preds)
+np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-7', preds)
 
 print 'Done training kfolds. Results:'
 print results
