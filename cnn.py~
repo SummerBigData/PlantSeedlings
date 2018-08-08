@@ -8,25 +8,23 @@ from keras.utils.np_utils import to_categorical
 
 seed = 7
 dim = 100
-folds = 20
+folds = 10
 split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
-modelSpecs = 'cnnConv-16-16-32-32-Dense-64- 64-32-12'
+modelSpecs = 'cnnKERAS'#'cnnConv-16-16-32-32-Dense-64-32-12'
 if not os.path.exists('weights/' + modelSpecs):
 	os.makedirs('weights/' + modelSpecs)
 	os.makedirs('predicts/' + modelSpecs)
 
 
-
-
-
 imgs, labels = dataPrep.getTrainDat(dim)
 unlab = dataPrep.getTestDat(dim)
 
-x, y = dataPrep.shuffleData(imgs, labels, seed)
-xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(x, y, split, folds)
+#x, y = dataPrep.shuffleData(imgs, labels, seed)
+xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(imgs, labels, split, folds)
+
 
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
@@ -37,7 +35,7 @@ label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common whea
 np.random.seed(seed)
 
 
-saveStr = modelSpecs+'/imgSize'+str(dim)+'Bsize'+str(bsize)+'k'
+saveStr = modelSpecs+'/imgSize'+str(dim)+'Bsize'+str(bsize)+'Split'+str(split)+'k'
 saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
 
@@ -45,17 +43,17 @@ saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
 # Load or make Model
 modelStr = 'models/'+ modelSpecs + str(dim)
-#os.remove('models/cnnModel' + str(dim) )	# FIX
+#os.remove(modelStr)	# FIX
 if os.path.exists(modelStr):
 	print ' '
 	print 'Found model'
 	print ' '
 	from keras.models import load_model
-	model = load_model(modelStr)
+	model = load_model(str(modelStr))
 else:
 	print ' '
 	print 'No saved model. Generating...'
-	model = dataPrep.getcnn(dim)
+	model = dataPrep.getcnnKERAS(dim)
 	model.save(modelStr)
 	print 'Created and saved model.'
 	print ' '
@@ -90,7 +88,7 @@ for i in range(folds):
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '
-			callbacks = dataPrep.get_callbacks(filepath=ithSaveStr, patience=60)
+			callbacks = dataPrep.get_callbacksKERAS(filepath=ithSaveStr, patience=100)
 			# Fit the model
 			model.fit(xtr, ytr_binary,
 				batch_size=bsize,
@@ -101,7 +99,7 @@ for i in range(folds):
 
 	else:
 		print 'No saved trial for kfold.'
-		callbacks = dataPrep.get_callbacks(filepath=ithSaveStr, patience=60)
+		callbacks = dataPrep.get_callbacksKERAS(filepath=ithSaveStr, patience=100)
 		# Fit the model
 		model.fit(xtr, ytr_binary,
 			batch_size=bsize,
@@ -127,11 +125,10 @@ for i in range(folds):
 	print ' '
 
 print 'Prediction dims', preds.shape
-np.save('predicts/'+modelSpecs +'/predFolds'+str(folds)+'split'+str(split)+'8-3', preds)
+np.save('predicts/'+modelSpecs +'/predFolds'+str(folds)+'split'+str(split)+'8-8', preds)
 
 print 'Done training kfolds. Results:'
 print results
-
 
 
 

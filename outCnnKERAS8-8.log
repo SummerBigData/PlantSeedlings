@@ -1,0 +1,95 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+ 
+Found train data with correct size
+ 
+ 
+Found test data with correct size
+ 
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+ 
+No saved model. Generating...
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         (None, 100, 100, 3)       0         
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 98, 98, 64)        1792      
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 98, 98, 64)        256       
+_________________________________________________________________
+leaky_re_lu_1 (LeakyReLU)    (None, 98, 98, 64)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 96, 96, 64)        36928     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 96, 96, 64)        256       
+_________________________________________________________________
+leaky_re_lu_2 (LeakyReLU)    (None, 96, 96, 64)        0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 47, 47, 64)        0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 45, 45, 128)       73856     
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 45, 45, 128)       512       
+_________________________________________________________________
+leaky_re_lu_3 (LeakyReLU)    (None, 45, 45, 128)       0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 43, 43, 128)       147584    
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 43, 43, 128)       512       
+_________________________________________________________________
+leaky_re_lu_4 (LeakyReLU)    (None, 43, 43, 128)       0         
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 21, 21, 128)       0         
+_________________________________________________________________
+conv2d_5 (Conv2D)            (None, 19, 19, 256)       295168    
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 19, 19, 256)       1024      
+_________________________________________________________________
+leaky_re_lu_5 (LeakyReLU)    (None, 19, 19, 256)       0         
+_________________________________________________________________
+conv2d_6 (Conv2D)            (None, 17, 17, 256)       590080    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 17, 17, 256)       1024      
+_________________________________________________________________
+leaky_re_lu_6 (LeakyReLU)    (None, 17, 17, 256)       0         
+_________________________________________________________________
+conv2d_7 (Conv2D)            (None, 15, 15, 256)       590080    
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 15, 15, 256)       1024      
+_________________________________________________________________
+leaky_re_lu_7 (LeakyReLU)    (None, 15, 15, 256)       0         
+_________________________________________________________________
+max_pooling2d_3 (MaxPooling2 (None, 7, 7, 256)         0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 12544)             0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 12544)             0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 128)               1605760   
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 128)               512       
+_________________________________________________________________
+activation_1 (Activation)    (None, 128)               0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 128)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 12)                1548      
+_________________________________________________________________
+batch_normalization_9 (Batch (None, 12)                48        
+_________________________________________________________________
+activation_2 (Activation)    (None, 12)                0         
+=================================================================
+Total params: 3,347,964
+Trainable params: 3,345,380
+Non-trainable params: 2,584
+_________________________________________________________________
+2018-08-08 18:12:50.063900: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-08 18:12:50.063936: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+Created and saved model.
+ 
+No saved trial for kfold.
+Train on 3800 samples, validate on 950 samples
+Epoch 1/500

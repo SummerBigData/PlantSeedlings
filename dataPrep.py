@@ -168,7 +168,7 @@ def getcnn(imgsize):
 	d = Flatten()(c)
 	d = BatchNormalization()(d)
 
-	denseFilters = [64, 64, 32]
+	denseFilters = [64, 32]
 	
 	for i in range(len(denseFilters)):
 		d = Dense(denseFilters[i], activation=p_activation)(d)
@@ -267,13 +267,81 @@ def getTsne2Cnn(imgsize, pcasize):
 	model.summary()
 	return model
 
+def getcnnKERAS(imgsize):
+	from keras.models import Model
+	from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, Activation, Input
+	from keras.layers import ZeroPadding2D
+	from keras.layers.advanced_activations import LeakyReLU
+	from keras.optimizers import Adam, SGD	
+	from keras.layers.advanced_activations import LeakyReLU
+	from keras.layers.normalization import BatchNormalization
+
+	# Dense layers set
+	def dense_set(inp_layer, n, activation, drop_rate=0.):
+		dp = Dropout(drop_rate)(inp_layer)
+		dns = Dense(n)(dp)
+		bn = BatchNormalization(axis=-1)(dns)
+		act = Activation(activation=activation)(bn)
+		return act
+
+	# Conv. layers set
+	def conv_layer(feature_batch, feature_map, kernel_size=(3, 3),strides=(1,1), zp_flag=False):
+		if zp_flag:
+			zp = ZeroPadding2D((1,1))(feature_batch)
+		else:
+			zp = feature_batch
+		conv = Conv2D(filters=feature_map, kernel_size=kernel_size, strides=strides)(zp)
+		bn = BatchNormalization(axis=3)(conv)
+		act = LeakyReLU(1/10)(bn)
+		return act
+
+	inp_img = Input(shape=(imgsize, imgsize, 3))
+
+	# 51
+	conv1 = conv_layer(inp_img, 64, zp_flag=False)
+	conv2 = conv_layer(conv1, 64, zp_flag=False)
+	mp1 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(conv2)
+	# 23
+	conv3 = conv_layer(mp1, 128, zp_flag=False)
+	conv4 = conv_layer(conv3, 128, zp_flag=False)
+	mp2 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(conv4)
+	# 9
+	conv7 = conv_layer(mp2, 256, zp_flag=False)
+	conv8 = conv_layer(conv7, 256, zp_flag=False)
+	conv9 = conv_layer(conv8, 256, zp_flag=False)
+	mp3 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(conv9)
+	# 1
+	# dense layers
+	flt = Flatten()(mp3)
+	ds1 = dense_set(flt, 128, activation='tanh')
+	out = dense_set(ds1, 12, activation='softmax')
+
+	model = Model(inputs=inp_img, outputs=out)
+
+	# The first 50 epochs are used by Adam opt.
+	# Then 30 epochs are used by SGD opt.
+
+	#mypotim = Adam(lr=2 * 1e-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+	mypotim = SGD(lr=1 * 1e-1, momentum=0.9, nesterov=True)
+	model.compile(loss='categorical_crossentropy',
+	                optimizer=mypotim,
+	                metrics=['accuracy'])
+	model.summary()
+	return model
+
+def get_callbacksKERAS(filepath, patience=5):
+	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
+	lr_reduce = ReduceLROnPlateau(monitor='val_acc', factor=0.1, epsilon=1e-5, patience=patience, verbose=1)
+	msave = ModelCheckpoint(filepath, save_best_only=True)
+	return [lr_reduce, msave]
+
 # We choose a high patience so the algorthim keeps searching even after finding a maximum
 def get_callbacks(filepath, patience=8):
 	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
 	
 	es = EarlyStopping('loss', patience=patience, mode="min")
-	msave = ModelCheckpoint(filepath,monitor='val_loss',save_best_only=True,save_weights_only=True)
-	reduce_lr = ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=7,min_lr=5e-7,mode="min")
+	msave = ModelCheckpoint(filepath,monitor='val_acc',save_best_only=True,save_weights_only=True)
+	reduce_lr = ReduceLROnPlateau(monitor='val_acc',factor=0.2,patience=15,min_lr=1e-6,mode="min")
 	return [es, msave, reduce_lr]
 
 

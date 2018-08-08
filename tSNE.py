@@ -19,7 +19,7 @@ def visualize_scatter(data_2d, label_ids, labelnames, figsize=(20,20)):
 		plt.scatter(data_2d[np.where(label_ids == label_id), 0],
 		                data_2d[np.where(label_ids == label_id), 1],
 		                marker='o',
-		                color= plt.cm.Set1(label_id / float(nb_classes)),
+		                color= plt.cm.tab20(label_id / float(nb_classes)),
 		                linewidth='1',
 		                alpha=0.8,
 		                label=labelnames[label_id])
@@ -36,7 +36,10 @@ def visualize_scatter_with_images(X_2d_data, images, figsize=(45,45), image_zoom
 	artists = []
 	for xy, i in zip(X_2d_data, images):
 		x0, y0 = xy
-		i = resize(i, (25, 25))
+		i = i.reshape((i.shape[0], i.shape[0], 1))
+		i = np.concatenate((i, i, i, i*1.5), axis = 2)
+
+		i = resize(i, (30, 30))
 		img = OffsetImage(i, zoom=image_zoom)
 		ab = AnnotationBbox(img, (x0, y0), xycoords='data', frameon=False)
 		artists.append(ax.add_artist(ab))
@@ -46,16 +49,28 @@ def visualize_scatter_with_images(X_2d_data, images, figsize=(45,45), image_zoom
 
 
 
-datStr = 'data/trainImgsRes400stampBW400.npy'
-ind = np.array([108, 155, 219, 222, 1436, 1564, 2250, 2302, 2346, 2358, 2382, 2398, 2414, 2584, 
-		2624, 2631, 2644, 2650, 2669, 2692, 2723, 2727, 2752, 2824, 2825, 2850, 2876, 
-		2893])
+trainStr = 'data/trainImgsRes400stampBW200Fixed.npy'
+testStr = 'data/testImgsRes400stampBW200Fixed.npy'
 
-imgs = dataPrep.resizeDat(datStr, 100)
+
+
+lab = dataPrep.resizeDat(trainStr, 100)
+unlab = dataPrep.resizeDat(testStr, 100)
 _, numlabels = dataPrep.getTrainDat(100)
+
+unlabLab = np.ones((unlab.shape[0]))*12
+
+imgs = np.concatenate((lab, unlab), axis=0)
+numlabels = np.concatenate((numlabels, unlabLab), axis = 0).astype(int)
+
+
 
 print ' '
 #print imgs.min(), imgs.max(),imgs.shape
+'''
+ind = np.array([108, 155, 219, 222, 1436, 1564, 2250, 2302, 2346, 2358, 2382, 2398, 2414, 2584, 
+		2624, 2631, 2644, 2650, 2669, 2692, 2723, 2727, 2752, 2824, 2825, 2850, 2876, 
+		2893])
 
 imgsToUse = np.zeros((imgs.shape[0] - len(ind), 100, 100))
 numlabelsToUse = np.zeros((imgs.shape[0] - len(ind) ))
@@ -73,7 +88,7 @@ for i in range(imgs.shape[0]):
 
 imgs = imgsToUse
 numlabels = numlabelsToUse.astype(int)
-
+'''
 imgsFlat = imgs.reshape(( imgs.shape[0], imgs.shape[1]**2 ))
 #imgs = resizeDat(datStr, dim)
 
@@ -96,25 +111,26 @@ dataPrep.PlotImgs(imgPlot, 10, 2)
 
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
-	'Small-flowered Cranesbill', 'Sugar beet']
+	'Small-flowered Cranesbill', 'Sugar beet', 'Unlabeled Testing Set']
 
 
 
-if os.path.exists('data/tSNEresScaled.npy'):
+if os.path.exists('data/tSNEresScaledAll.npy'):
 	print 'Pulling saved run'
-	tsne_result_scaled = np.load('data/tSNEresScaled.npy')
+	tsne_result_scaled = np.load('data/tSNEresScaledAll.npy')
 	print tsne_result_scaled.shape
 else:
 	print 'Running tsne'
 	tsne = TSNE(n_components=2, perplexity=40.0)
 	tsne_result = tsne.fit_transform(imgPCA)
 	tsne_result_scaled = StandardScaler().fit_transform(tsne_result)
-	np.save('data/tSNEresScaled', tsne_result_scaled)
+	np.save('data/tSNEresScaledAll', tsne_result_scaled)
 
 
-visualize_scatter(tsne_result_scaled, numlabels, label )
+np.save('data/tSNEresScaledAllResults',tsne_result_scaled)
+#visualize_scatter(tsne_result_scaled, numlabels, label )
 
-visualize_scatter_with_images(tsne_result_scaled, imgs, image_zoom=0.7)
+#visualize_scatter_with_images(tsne_result_scaled, imgs, image_zoom=0.7)
 
 
 

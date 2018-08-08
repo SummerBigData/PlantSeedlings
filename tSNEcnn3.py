@@ -5,63 +5,8 @@ import os
 import matplotlib.pyplot as plt
 from keras.utils.np_utils import to_categorical
 
-'''
-dim = 200
-# Get the statistics of an image or many images
-def GetStats(imgs, oneImg):	# oneImg is 1 if true, 0 if false
-	imgsM = np.zeros((3))
-	imgsS = np.zeros((3))
-	if oneImg == 1:
-		for i in range(3):
-			imgsM[i] = np.mean(imgs[:,:,i])
-			imgsS[i] = np.std(imgs[:,:,i])
-	else:
-		for i in range(3):
-			imgsM[i] = np.mean(imgs[:,:,:,i])
-			imgsS[i] = np.std(imgs[:,:,:,i])	
-	return imgsM, imgsS
 
-def FixColor(img, means, stds):
-	wrongM, wrongS = GetStats(img, 1)
-	fixedImg = np.zeros((img.shape))
-	for i in range(3):
-		temp = (img[:,:,i] - wrongM[i]) / wrongS[i]
-		fixedImg[:,:,i] = temp * stds[i] + means[i]
-	return fixedImg
-
-
-
-
-#imgs, labels = dataPrep.getTrainDat(dim)
-unlab = dataPrep.getTestDat(dim)
-imgs = unlab
-#imgs, labels = dataPrep.shuffleData(imgs, labels, seed)
-
-imgsMean, imgsStd = GetStats(imgs, 0)
-
-imgMask = np.zeros((imgs.shape[0], dim, dim))
-imgZero = []
-wrongImgs = []
-for i in range(imgs.shape[0]):	# FIX
-	imgMask[i] = dataPrep.getPlantMask(imgs[i], 36)
-	if imgMask[i].max() < 0.001:
-		print 'Fixed here:' , i
-		wrongImgs.append(i)
-		imgs[i] = FixColor(imgs[i], imgsMean, imgsStd)
-		imgMask[i] = dataPrep.getPlantMask(imgs[i], 36)
-
-stampImgs = np.zeros(imgMask.shape)
-
-for i in range(imgs.shape[0]):
-	avgImg = (imgs[i,:,:,0] + imgs[i,:,:,1] + imgs[i,:,:,2]) / 3.0
-	stampImgs[i] = np.multiply(avgImg, imgMask[i])
-
-
-np.save('data/testImgsRes400stampBW'+str(dim)+'Fixed.npy', stampImgs)
-print 'Done making stamp'
-'''
-
-def DatAug(xSt, unlSt):
+def DatAug(xSt, unlSt, xtsne, unltsne):
 	from sklearn.decomposition import PCA
 
 	# Whiten the stamp images
@@ -73,6 +18,9 @@ def DatAug(xSt, unlSt):
 	
 	xSt, unlSt = xCombPCA[ :xSt.shape[0] ], xCombPCA[ xSt.shape[0]: ]
 
+	# Add the tSNE coordinates
+	xSt = np.concatenate((xSt, xtsne), axis = 1)
+	unlSt = np.concatenate((unlSt, unltsne), axis = 1)
 	return xSt, unlSt
 
 
@@ -81,14 +29,15 @@ def DatAug(xSt, unlSt):
 
 seed = 7
 dim = 100
-dim = int(dim)
 folds = 10
 split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
-modelSpecs = 'tsne2CnnConv-16-16-32-32-Dense-64-32-12'
-
+modelSpecs = 'tsne3wpcaCnnConv-16-16-32-32-Dense-64-32-12'
+if not os.path.exists('weights/' + modelSpecs):
+	os.makedirs('weights/' + modelSpecs)
+	os.makedirs('predicts/' + modelSpecs)
 
 
 # Get the usual images
@@ -99,8 +48,15 @@ unlab = dataPrep.getTestDat(dim)
 imgsSt = dataPrep.resizeDat('data/trainImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
 unlabSt = dataPrep.resizeDat('data/testImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
 
+# Get the tSNE coordinates
+tSNEdat = np.load('data/tSNEresScaledAllResults.npy') # 5544 x 2
+tSNEimgs = tSNEdat[ :imgs.shape[0] ]
+tSNEunlab = tSNEdat[ imgs.shape[0]: ]
+
 # Augment the Data
-xst, unlst = DatAug(imgsSt, unlabSt)
+xst, unlst = DatAug(imgsSt, unlabSt, tSNEimgs, tSNEunlab)
+
+print 'Augmentation data size', xst.shape, unlst.shape
 
 # Shuffle the data
 #x, y = dataPrep.shuffleData(imgs, labels, seed)
@@ -136,7 +92,7 @@ if os.path.exists(modelStr):
 else:
 	print ' '
 	print 'No saved model. Generating...'
-	model = dataPrep.getTsne2Cnn(dim, 100)
+	model = dataPrep.getTsne2Cnn(dim, 102) # FIX
 	model.save(modelStr)
 	print 'Created and saved model.'
 	print ' '
@@ -168,7 +124,7 @@ for i in range(folds):
 		model.load_weights(ithSaveStr)
 		scores = model.evaluate([xte, xstte], yte_binary, verbose=0)
 		if scores[1] < cutoff:
-			#os.remove(ithSaveStr)
+			#os.remove(ithSaveStr)		# FIX
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '

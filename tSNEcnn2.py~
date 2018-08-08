@@ -105,7 +105,7 @@ xst, unlst = DatAug(imgsSt, unlabSt)
 #x, y = dataPrep.shuffleData(imgs, labels, seed)
 
 # Get the list of data for kfold testing
-xtrSp, xsttrSp, ytrSp, xteSp, xstteSp, yteSp = dataPrep.DatSplitStamp(x, xst, y, split, folds)
+xtrSp, xsttrSp, ytrSp, xteSp, xstteSp, yteSp = dataPrep.DatSplitStamp(imgs, xst, labels, split, folds)
 
 # Labels in case they are needed
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
@@ -167,7 +167,7 @@ for i in range(folds):
 		model.load_weights(ithSaveStr)
 		scores = model.evaluate([xte, xstte], yte_binary, verbose=0)
 		if scores[1] < cutoff:
-			os.remove(ithSaveStr)
+			#os.remove(ithSaveStr)
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '
@@ -201,14 +201,14 @@ for i in range(folds):
 	scores = model.evaluate([xte, xstte], yte_binary, verbose=0)
 	results[i, 2], results[i, 3] = scores[0], scores[1]
 	# Unlabeled predictions
-	preds[i] = model.predict(unlab)
+	preds[i] = model.predict([unlab, unlst])
 
 	print 'Training loss for fold',i,'is', results[i,0],'with percent',results[i,1]*100
 	print 'Testing loss for fold',i,'is', results[i,2],'with percent',results[i,3]*100
 	print ' '
 
 print 'Prediction dims', preds.shape
-np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-7', preds)
+np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-8', preds)
 
 print 'Done training kfolds. Results:'
 print results

@@ -1,5 +1,5 @@
-#PBS -N runTSNEdim200cnn8-7
-#PBS -l walltime=50:00:00
+#PBS -N runTSNEdim100cnn8-8
+#PBS -l walltime=40:00:00
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=32GB
 #PBS -j oe
@@ -21,4 +21,4 @@ source activate local
 
 #python -u icecnn.py $PBS_ARRAYID >& outIceCnn7-2_$PBS_ARRAYID.log
 # h, flip, iters, pseusize
-python -u tSNEcnn.py >& outTSNEdim200cnn8-7.log
+python -u tSNEcnn.py >& outTSNEdim100cnn8-8.log

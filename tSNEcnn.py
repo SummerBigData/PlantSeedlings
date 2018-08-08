@@ -56,14 +56,14 @@ for i in range(imgs.shape[0]):
 	avgImg = (imgs[i,:,:,0] + imgs[i,:,:,1] + imgs[i,:,:,2]) / 3.0
 	stampImgs[i] = np.multiply(avgImg, imgMask[i])
 
-
+print stampImgs.shape
 np.save('data/testImgsRes400stampBW'+str(dim)+'Fixed.npy', stampImgs)
 print 'Done making stamp'
 '''
 
 
 seed = 7
-dim = 200
+dim = 100
 folds = 10
 split = 0.2
 cutoff= 0.90
@@ -104,7 +104,7 @@ saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
 # Load or make Model
 modelStr = 'models/'+ modelSpecs + str(dim)
-#os.remove(modelStr)	# FIX
+os.remove(modelStr)	# FIX
 if os.path.exists(modelStr):
 	print ' '
 	print 'Found model'
@@ -146,7 +146,7 @@ for i in range(folds):
 		model.load_weights(ithSaveStr)
 		scores = model.evaluate(xte, yte_binary, verbose=0)
 		if scores[1] < cutoff:
-			os.remove(ithSaveStr)
+			#os.remove(ithSaveStr)
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '
@@ -187,14 +187,10 @@ for i in range(folds):
 	print ' '
 
 print 'Prediction dims', preds.shape
-np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-7', preds)
+np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-8', preds)
 
 print 'Done training kfolds. Results:'
 print results
-
-
-
-
 
 
 
