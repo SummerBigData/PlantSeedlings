@@ -9,66 +9,64 @@ Found test data with correct size
  
 /users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
   "This module will be removed in 0.20.", DeprecationWarning)
- 
-No saved model. Generating...
 _________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-input_1 (InputLayer)         (None, 100, 100, 3)       0         
+input_1 (InputLayer)         (None, 51, 51, 3)         0         
 _________________________________________________________________
-conv2d_1 (Conv2D)            (None, 98, 98, 64)        1792      
+conv2d_1 (Conv2D)            (None, 49, 49, 64)        1792      
 _________________________________________________________________
-batch_normalization_1 (Batch (None, 98, 98, 64)        256       
+batch_normalization_1 (Batch (None, 49, 49, 64)        256       
 _________________________________________________________________
-leaky_re_lu_1 (LeakyReLU)    (None, 98, 98, 64)        0         
+leaky_re_lu_1 (LeakyReLU)    (None, 49, 49, 64)        0         
 _________________________________________________________________
-conv2d_2 (Conv2D)            (None, 96, 96, 64)        36928     
+conv2d_2 (Conv2D)            (None, 47, 47, 64)        36928     
 _________________________________________________________________
-batch_normalization_2 (Batch (None, 96, 96, 64)        256       
+batch_normalization_2 (Batch (None, 47, 47, 64)        256       
 _________________________________________________________________
-leaky_re_lu_2 (LeakyReLU)    (None, 96, 96, 64)        0         
+leaky_re_lu_2 (LeakyReLU)    (None, 47, 47, 64)        0         
 _________________________________________________________________
-max_pooling2d_1 (MaxPooling2 (None, 47, 47, 64)        0         
+max_pooling2d_1 (MaxPooling2 (None, 23, 23, 64)        0         
 _________________________________________________________________
-conv2d_3 (Conv2D)            (None, 45, 45, 128)       73856     
+conv2d_3 (Conv2D)            (None, 21, 21, 128)       73856     
 _________________________________________________________________
-batch_normalization_3 (Batch (None, 45, 45, 128)       512       
+batch_normalization_3 (Batch (None, 21, 21, 128)       512       
 _________________________________________________________________
-leaky_re_lu_3 (LeakyReLU)    (None, 45, 45, 128)       0         
+leaky_re_lu_3 (LeakyReLU)    (None, 21, 21, 128)       0         
 _________________________________________________________________
-conv2d_4 (Conv2D)            (None, 43, 43, 128)       147584    
+conv2d_4 (Conv2D)            (None, 19, 19, 128)       147584    
 _________________________________________________________________
-batch_normalization_4 (Batch (None, 43, 43, 128)       512       
+batch_normalization_4 (Batch (None, 19, 19, 128)       512       
 _________________________________________________________________
-leaky_re_lu_4 (LeakyReLU)    (None, 43, 43, 128)       0         
+leaky_re_lu_4 (LeakyReLU)    (None, 19, 19, 128)       0         
 _________________________________________________________________
-max_pooling2d_2 (MaxPooling2 (None, 21, 21, 128)       0         
+max_pooling2d_2 (MaxPooling2 (None, 9, 9, 128)         0         
 _________________________________________________________________
-conv2d_5 (Conv2D)            (None, 19, 19, 256)       295168    
+conv2d_5 (Conv2D)            (None, 7, 7, 256)         295168    
 _________________________________________________________________
-batch_normalization_5 (Batch (None, 19, 19, 256)       1024      
+batch_normalization_5 (Batch (None, 7, 7, 256)         1024      
 _________________________________________________________________
-leaky_re_lu_5 (LeakyReLU)    (None, 19, 19, 256)       0         
+leaky_re_lu_5 (LeakyReLU)    (None, 7, 7, 256)         0         
 _________________________________________________________________
-conv2d_6 (Conv2D)            (None, 17, 17, 256)       590080    
+conv2d_6 (Conv2D)            (None, 5, 5, 256)         590080    
 _________________________________________________________________
-batch_normalization_6 (Batch (None, 17, 17, 256)       1024      
+batch_normalization_6 (Batch (None, 5, 5, 256)         1024      
 _________________________________________________________________
-leaky_re_lu_6 (LeakyReLU)    (None, 17, 17, 256)       0         
+leaky_re_lu_6 (LeakyReLU)    (None, 5, 5, 256)         0         
 _________________________________________________________________
-conv2d_7 (Conv2D)            (None, 15, 15, 256)       590080    
+conv2d_7 (Conv2D)            (None, 3, 3, 256)         590080    
 _________________________________________________________________
-batch_normalization_7 (Batch (None, 15, 15, 256)       1024      
+batch_normalization_7 (Batch (None, 3, 3, 256)         1024      
 _________________________________________________________________
-leaky_re_lu_7 (LeakyReLU)    (None, 15, 15, 256)       0         
+leaky_re_lu_7 (LeakyReLU)    (None, 3, 3, 256)         0         
 _________________________________________________________________
-max_pooling2d_3 (MaxPooling2 (None, 7, 7, 256)         0         
+max_pooling2d_3 (MaxPooling2 (None, 1, 1, 256)         0         
 _________________________________________________________________
-flatten_1 (Flatten)          (None, 12544)             0         
+flatten_1 (Flatten)          (None, 256)               0         
 _________________________________________________________________
-dropout_1 (Dropout)          (None, 12544)             0         
+dropout_1 (Dropout)          (None, 256)               0         
 _________________________________________________________________
-dense_1 (Dense)              (None, 128)               1605760   
+dense_1 (Dense)              (None, 128)               32896     
 _________________________________________________________________
 batch_normalization_8 (Batch (None, 128)               512       
 _________________________________________________________________
@@ -82,14 +80,58 @@ batch_normalization_9 (Batch (None, 12)                48
 _________________________________________________________________
 activation_2 (Activation)    (None, 12)                0         
 =================================================================
-Total params: 3,347,964
-Trainable params: 3,345,380
+Total params: 1,775,100
+Trainable params: 1,772,516
 Non-trainable params: 2,584
 _________________________________________________________________
-2018-08-08 18:12:50.063900: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
-2018-08-08 18:12:50.063936: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
-Created and saved model.
  
-No saved trial for kfold.
+Pulling kfold 0 from previous runs
+2018-08-09 09:57:11.885290: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-09 09:57:11.885324: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+ 
+Bad saved trial. Testing acc <0.9%. Rerunning ...
+ 
 Train on 3800 samples, validate on 950 samples
 Epoch 1/500
+612s - loss: 1.0234 - acc: 0.6513 - val_loss: 1.6687 - val_acc: 0.4874
+Epoch 2/500
+609s - loss: 0.7434 - acc: 0.7421 - val_loss: 2.0756 - val_acc: 0.4853
+Epoch 3/500
+609s - loss: 0.5918 - acc: 0.7932 - val_loss: 1.0800 - val_acc: 0.6400
+Epoch 4/500
+610s - loss: 0.4892 - acc: 0.8379 - val_loss: 1.3913 - val_acc: 0.5632
+Epoch 5/500
+609s - loss: 0.4416 - acc: 0.8500 - val_loss: 0.7747 - val_acc: 0.7547
+Epoch 6/500
+607s - loss: 0.3858 - acc: 0.8647 - val_loss: 0.9888 - val_acc: 0.7105
+Epoch 7/500
+609s - loss: 0.3744 - acc: 0.8711 - val_loss: 0.7238 - val_acc: 0.7695
+Epoch 8/500
+604s - loss: 0.3212 - acc: 0.8797 - val_loss: 0.7161 - val_acc: 0.7874
+Epoch 9/500
+608s - loss: 0.3168 - acc: 0.8842 - val_loss: 0.6547 - val_acc: 0.7895
+Epoch 10/500
+608s - loss: 0.2730 - acc: 0.9024 - val_loss: 0.5226 - val_acc: 0.8179
+Epoch 11/500
+608s - loss: 0.2273 - acc: 0.9182 - val_loss: 0.8139 - val_acc: 0.7632
+Epoch 12/500
+608s - loss: 0.2226 - acc: 0.9145 - val_loss: 0.7719 - val_acc: 0.7874
+Epoch 13/500
+607s - loss: 0.2315 - acc: 0.9142 - val_loss: 0.6248 - val_acc: 0.7863
+Epoch 14/500
+609s - loss: 0.2309 - acc: 0.9129 - val_loss: 0.6626 - val_acc: 0.8126
+Epoch 15/500
+608s - loss: 0.2024 - acc: 0.9237 - val_loss: 0.9273 - val_acc: 0.7274
+Epoch 16/500
+608s - loss: 0.1916 - acc: 0.9268 - val_loss: 0.4116 - val_acc: 0.8737
+Epoch 17/500
+605s - loss: 0.1592 - acc: 0.9418 - val_loss: 1.8089 - val_acc: 0.5453
+Epoch 18/500
+608s - loss: 0.1782 - acc: 0.9337 - val_loss: 0.5071 - val_acc: 0.8547
+Epoch 19/500
+609s - loss: 0.1561 - acc: 0.9424 - val_loss: 0.6466 - val_acc: 0.7663
+Epoch 20/500
+608s - loss: 0.1463 - acc: 0.9497 - val_loss: 0.4070 - val_acc: 0.8768
+Epoch 21/500
+608s - loss: 0.1417 - acc: 0.9492 - val_loss: 0.6978 - val_acc: 0.7968
+Epoch 22/500

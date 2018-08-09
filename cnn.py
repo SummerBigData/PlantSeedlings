@@ -7,7 +7,8 @@ from skimage.transform import resize
 from keras.utils.np_utils import to_categorical
 
 seed = 7
-dim = 100
+dim = 51 
+featSize = 0
 folds = 10
 split = 0.2
 cutoff= 0.90
@@ -21,6 +22,9 @@ if not os.path.exists('weights/' + modelSpecs):
 
 imgs, labels = dataPrep.getTrainDat(dim)
 unlab = dataPrep.getTestDat(dim)
+
+#imgs = dataPrep.resizeDat('data/trainImgsRes400stampBW200Fixed.npy', dim)
+#unlab = dataPrep.resizeDat('data/testImgsRes400stampBW200Fixed.npy', dim)
 
 #x, y = dataPrep.shuffleData(imgs, labels, seed)
 xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(imgs, labels, split, folds)
@@ -43,7 +47,8 @@ saveStr = 'weights/' + saveStr #+ '.hdf5' #'{epoch:02d}-{val_loss:.2f}.hdf5'
 
 # Load or make Model
 modelStr = 'models/'+ modelSpecs + str(dim)
-os.remove(modelStr)	# FIX
+'''
+#os.remove(modelStr)	# FIX
 if os.path.exists(modelStr):
 	print ' '
 	print 'Found model'
@@ -57,7 +62,8 @@ else:
 	model.save(modelStr)
 	print 'Created and saved model.'
 	print ' '
-
+'''
+model = dataPrep.getcnnKERAS(dim, featSize)
 # Initialize the vectors to hold the final performance. tr loss, tr percent, te loss, te percent
 results = np.zeros((folds, 4))
 # Also initialize the predictions matrix
@@ -84,7 +90,7 @@ for i in range(folds):
 		model.load_weights(ithSaveStr)
 		scores = model.evaluate(xte, yte_binary, verbose=0)
 		if scores[1] < cutoff:
-			os.remove(ithSaveStr)
+			#os.remove(ithSaveStr)
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '

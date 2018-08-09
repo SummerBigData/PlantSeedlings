@@ -267,10 +267,10 @@ def getTsne2Cnn(imgsize, pcasize):
 	model.summary()
 	return model
 
-def getcnnKERAS(imgsize):
+def getcnnKERAS(imgsize, featsize):
 	from keras.models import Model
 	from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, Activation, Input
-	from keras.layers import ZeroPadding2D
+	from keras.layers import ZeroPadding2D, concatenate
 	from keras.layers.advanced_activations import LeakyReLU
 	from keras.optimizers import Adam, SGD	
 	from keras.layers.advanced_activations import LeakyReLU
@@ -295,10 +295,10 @@ def getcnnKERAS(imgsize):
 		act = LeakyReLU(1/10)(bn)
 		return act
 
-	inp_img = Input(shape=(imgsize, imgsize, 3))
+	input1 = Input(shape=(imgsize, imgsize, 3))
 
 	# 51
-	conv1 = conv_layer(inp_img, 64, zp_flag=False)
+	conv1 = conv_layer(input1, 64, zp_flag=False)
 	conv2 = conv_layer(conv1, 64, zp_flag=False)
 	mp1 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(conv2)
 	# 23
@@ -311,12 +311,21 @@ def getcnnKERAS(imgsize):
 	conv9 = conv_layer(conv8, 256, zp_flag=False)
 	mp3 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2))(conv9)
 	# 1
-	# dense layers
+	
 	flt = Flatten()(mp3)
+	# If there are additional features to add, do it now
+	if featsize > 0:
+		input2 = Input(shape=(featsize,))
+		flt = concatenate([flt, input2])
+
+	# dense layers
 	ds1 = dense_set(flt, 128, activation='tanh')
 	out = dense_set(ds1, 12, activation='softmax')
 
-	model = Model(inputs=inp_img, outputs=out)
+	if featsize > 0:
+		model = Model(inputs=[input1, input2], outputs=out)
+	else:
+		model = Model(inputs=[input1], outputs=out)
 
 	# The first 50 epochs are used by Adam opt.
 	# Then 30 epochs are used by SGD opt.
@@ -329,10 +338,11 @@ def getcnnKERAS(imgsize):
 	model.summary()
 	return model
 
-def get_callbacksKERAS(filepath, patience=5):
-    lr_reduce = ReduceLROnPlateau(monitor='val_acc', factor=0.1, epsilon=1e-5, patience=patience, verbose=1)
-    msave = ModelCheckpoint(filepath, save_best_only=True)
-    return [lr_reduce, msave]
+def get_callbacksKERAS(filepath, pat=5):
+	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
+	lr_reduce = ReduceLROnPlateau(monitor='val_acc', factor=0.1, epsilon=1e-5, patience=pat, verbose=1)
+	msave = ModelCheckpoint(filepath, save_best_only=True)
+	return [lr_reduce, msave]
 
 # We choose a high patience so the algorthim keeps searching even after finding a maximum
 def get_callbacks(filepath, patience=8):
