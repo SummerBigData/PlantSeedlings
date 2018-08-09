@@ -145,6 +145,10 @@ def shuffleData(xtr, ytr, ind):
 		ytrshuffle = np.ravel(augdat[:, 0])
 		return xtrshuffle, ytrshuffle.astype(int)
 
+def sciShuffle(xtr, x2tr, ytr, ind):
+	from sklearn.utils import shuffle
+	X, X2, y = shuffle(xtr, x2tr, ytr, random_state=ind)
+	return X, X2, y
 
 def getcnn(imgsize):
 	from keras.models import Model
@@ -335,7 +339,7 @@ def getcnnKERAS(imgsize, featsize):
 	model.compile(loss='categorical_crossentropy',
 	                optimizer=mypotim,
 	                metrics=['accuracy'])
-	model.summary()
+	#model.summary()
 	return model
 
 def get_callbacksKERAS(filepath, pat=5):

@@ -11,6 +11,7 @@ from keras.utils.np_utils import to_categorical
 def DatAug(xSt, unlSt, xtsne, unltsne):
 	'''
 	from sklearn.decomposition import PCA
+	from sklearn import preprocessing
 
 	# Whiten the stamp images
 	xcomb = np.concatenate((xSt, unlSt), axis=0)
@@ -18,22 +19,29 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 
 	pca = PCA(n_components=100)
 	xCombPCA = pca.fit_transform(xcombFlat)
-	
+
+	# Scale pca correctly
+	xCombPCA = preprocessing.scale(xCombPCA)
 	xSt, unlSt = xCombPCA[ :xSt.shape[0] ], xCombPCA[ xSt.shape[0]: ]
 
-	# Add the tSNE coordinates
+	# tSNE is already scaled correctly
+
+	# Combine both the data together
 	xSt = np.concatenate((xSt, xtsne), axis = 1)
 	unlSt = np.concatenate((unlSt, unltsne), axis = 1)
 	'''
 	xSt = xtsne
 	unlSt = unltsne
+	
+	#print xSt.min(), xSt.max(), unlSt.min(), unlSt.max()
 	return xSt, unlSt
 
 # Constants ---------- Constants ---------- Constants ---------- Constants ---------- Constants
 
 seed = 7
 #np.random.seed(seed)
-
+trFraction = 1
+trsize = int(4750*trFraction)
 dim = 51 
 featSize = 2
 folds = 10
@@ -65,7 +73,7 @@ imgsSt = dataPrep.resizeDat('data/trainImgsRes400stampBW'+str(200)+'Fixed.npy', 
 unlabSt = dataPrep.resizeDat('data/testImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
 
 # Get the tSNE coordinates
-tSNEdat = np.load('data/tSNEresScaledAllResults.npy') # 5544 x 2
+tSNEdat = np.load('data/tSNEresScaledAllResults.npy')#/4.5 + 0.5 # 5544 x 2
 tSNEimgs = tSNEdat[ :imgs.shape[0] ]
 tSNEunlab = tSNEdat[ imgs.shape[0]: ]
 
@@ -73,31 +81,40 @@ tSNEunlab = tSNEdat[ imgs.shape[0]: ]
 xst, unlst = DatAug(imgsSt, unlabSt, tSNEimgs, tSNEunlab)
 print 'Augmentation data size', xst.shape, unlst.shape
 
-#x, y = dataPrep.shuffleData(imgs, labels, seed)
+imgs, xst, labels = dataPrep.sciShuffle(imgs, xst, labels, seed)
+
+# Limit the data sent to the model
+imgs = imgs[:trsize]
+xst = xst[:trsize]
+labels = labels[:trsize]
 # Get the list of data for kfold testing
 xtrSp, xsttrSp, ytrSp, xteSp, xstteSp, yteSp = dataPrep.DatSplitStamp(imgs, xst, labels, split, folds)
+
+print xtrSp[0].shape, ytrSp[0].shape
 
 
 # KERAS NEURAL NETWORK
 
 # Load or make Model
 modelStr = 'models/'+ modelSpecs + str(dim)
-'''
+
+
 #os.remove(modelStr)	# FIX
-if os.path.exists(modelStr):
-	print ' '
-	print 'Found model'
-	print ' '
-	from keras.models import load_model
-	model = load_model(modelStr)
-else:
-	print ' '
-	print 'No saved model. Generating...'
-	model = dataPrep.getcnnKERAS(dim)
-	model.save(modelStr)
-	print 'Created and saved model.'
-	print ' '
-'''
+#if os.path.exists(modelStr):
+#	print ' '
+#	print 'Found model'
+#	print ' '
+#	from keras.models import load_model
+#	model = load_model(modelStr)
+#else:
+#	print ' '
+#	print 'No saved model. Generating...'
+#	model = dataPrep.getcnnKERAS(dim)
+#	model.save(modelStr)
+#	print 'Created and saved model.'
+#	print ' '
+
+
 model = dataPrep.getcnnKERAS(dim, featSize)
 # Initialize the vectors to hold the final performance. tr loss, tr percent, te loss, te percent
 results = np.zeros((folds, 4))
@@ -126,7 +143,7 @@ for i in range(folds):
 		model.load_weights(ithSaveStr)
 		scores = model.evaluate([xte, xstte], yte_binary, verbose=0)
 		if scores[1] < cutoff:
-			#os.remove(ithSaveStr)		# FIX
+			os.remove(ithSaveStr)		# FIX
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '
@@ -171,7 +188,6 @@ np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+st
 
 print 'Done training kfolds. Results:'
 print results
-
 
 
 

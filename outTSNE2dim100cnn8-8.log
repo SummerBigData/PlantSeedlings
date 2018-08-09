@@ -2463,3 +2463,103 @@ Epoch 62/500
 Epoch 63/500
 67s - loss: 0.6110 - acc: 0.7950 - val_loss: 0.7675 - val_acc: 0.7179
 Epoch 64/500
+65s - loss: 0.5995 - acc: 0.7932 - val_loss: 0.7618 - val_acc: 0.7211
+Epoch 65/500
+65s - loss: 0.5895 - acc: 0.8037 - val_loss: 0.7610 - val_acc: 0.7211
+Epoch 66/500
+65s - loss: 0.5945 - acc: 0.7971 - val_loss: 0.7588 - val_acc: 0.7211
+Epoch 67/500
+65s - loss: 0.6023 - acc: 0.7971 - val_loss: 0.7678 - val_acc: 0.7200
+Epoch 68/500
+65s - loss: 0.6073 - acc: 0.7871 - val_loss: 0.7568 - val_acc: 0.7200
+Epoch 69/500
+65s - loss: 0.5957 - acc: 0.7992 - val_loss: 0.7678 - val_acc: 0.7168
+Epoch 70/500
+65s - loss: 0.5960 - acc: 0.7913 - val_loss: 0.7601 - val_acc: 0.7221
+Epoch 71/500
+65s - loss: 0.6002 - acc: 0.7995 - val_loss: 0.7583 - val_acc: 0.7211
+Epoch 72/500
+65s - loss: 0.5979 - acc: 0.7971 - val_loss: 0.7630 - val_acc: 0.7189
+Epoch 73/500
+65s - loss: 0.5998 - acc: 0.7911 - val_loss: 0.7628 - val_acc: 0.7200
+Epoch 74/500
+65s - loss: 0.5697 - acc: 0.8103 - val_loss: 0.7639 - val_acc: 0.7200
+Epoch 75/500
+65s - loss: 0.6057 - acc: 0.8029 - val_loss: 0.7606 - val_acc: 0.7200
+Epoch 76/500
+65s - loss: 0.5844 - acc: 0.8008 - val_loss: 0.7617 - val_acc: 0.7200
+Epoch 77/500
+65s - loss: 0.5763 - acc: 0.7992 - val_loss: 0.7585 - val_acc: 0.7242
+Epoch 78/500
+65s - loss: 0.5996 - acc: 0.7945 - val_loss: 0.7642 - val_acc: 0.7200
+Epoch 79/500
+65s - loss: 0.6022 - acc: 0.7863 - val_loss: 0.7571 - val_acc: 0.7242
+Epoch 80/500
+65s - loss: 0.5980 - acc: 0.7968 - val_loss: 0.7606 - val_acc: 0.7211
+Epoch 81/500
+65s - loss: 0.5959 - acc: 0.7884 - val_loss: 0.7587 - val_acc: 0.7221
+Epoch 82/500
+67s - loss: 0.6031 - acc: 0.7918 - val_loss: 0.7553 - val_acc: 0.7263
+Epoch 83/500
+67s - loss: 0.6110 - acc: 0.7861 - val_loss: 0.7650 - val_acc: 0.7211
+Epoch 84/500
+65s - loss: 0.5977 - acc: 0.7984 - val_loss: 0.7666 - val_acc: 0.7189
+Epoch 85/500
+65s - loss: 0.6071 - acc: 0.7947 - val_loss: 0.7610 - val_acc: 0.7232
+Epoch 86/500
+65s - loss: 0.5913 - acc: 0.8013 - val_loss: 0.7604 - val_acc: 0.7200
+Epoch 87/500
+65s - loss: 0.6038 - acc: 0.7945 - val_loss: 0.7635 - val_acc: 0.7200
+Epoch 88/500
+65s - loss: 0.6073 - acc: 0.7903 - val_loss: 0.7626 - val_acc: 0.7221
+Epoch 89/500
+65s - loss: 0.5942 - acc: 0.7945 - val_loss: 0.7693 - val_acc: 0.7189
+Epoch 90/500
+65s - loss: 0.6093 - acc: 0.7863 - val_loss: 0.7635 - val_acc: 0.7200
+Epoch 91/500
+65s - loss: 0.5970 - acc: 0.7929 - val_loss: 0.7723 - val_acc: 0.7200
+Epoch 92/500
+65s - loss: 0.5863 - acc: 0.7939 - val_loss: 0.7671 - val_acc: 0.7189
+Epoch 93/500
+65s - loss: 0.6007 - acc: 0.7947 - val_loss: 0.7660 - val_acc: 0.7189
+Epoch 94/500
+65s - loss: 0.5910 - acc: 0.7995 - val_loss: 0.7600 - val_acc: 0.7232
+Epoch 95/500
+65s - loss: 0.5945 - acc: 0.7939 - val_loss: 0.7597 - val_acc: 0.7232
+Epoch 96/500
+65s - loss: 0.6118 - acc: 0.7926 - val_loss: 0.7591 - val_acc: 0.7263
+Epoch 97/500
+65s - loss: 0.6068 - acc: 0.7955 - val_loss: 0.7587 - val_acc: 0.7253
+Epoch 98/500
+65s - loss: 0.5952 - acc: 0.8000 - val_loss: 0.7654 - val_acc: 0.7189
+Epoch 99/500
+67s - loss: 0.5978 - acc: 0.7989 - val_loss: 0.7684 - val_acc: 0.7179
+Epoch 100/500
+67s - loss: 0.5883 - acc: 0.7995 - val_loss: 0.7658 - val_acc: 0.7221
+Epoch 101/500
+65s - loss: 0.5920 - acc: 0.8050 - val_loss: 0.7659 - val_acc: 0.7211
+Epoch 102/500
+64s - loss: 0.6051 - acc: 0.7895 - val_loss: 0.7683 - val_acc: 0.7221
+Epoch 103/500
+65s - loss: 0.5777 - acc: 0.7989 - val_loss: 0.7629 - val_acc: 0.7211
+Epoch 104/500
+65s - loss: 0.5858 - acc: 0.7947 - val_loss: 0.7682 - val_acc: 0.7200
+Epoch 105/500
+65s - loss: 0.5934 - acc: 0.7932 - val_loss: 0.7672 - val_acc: 0.7179
+Epoch 106/500
+65s - loss: 0.6027 - acc: 0.7961 - val_loss: 0.7680 - val_acc: 0.7179
+Training loss for fold 9 is 0.736580210108506 with percent 73.18421051376744
+Testing loss for fold 9 is 0.7416777494079189 with percent 73.36842110282497
+ 
+Prediction dims (10, 794, 12)
+Done training kfolds. Results:
+[[0.66510884 0.75289474 0.93707012 0.68      ]
+ [0.74395009 0.73210526 0.65956492 0.74947368]
+ [0.73776583 0.73263158 0.72632475 0.73052632]
+ [0.74357734 0.72947368 0.7166273  0.73473684]
+ [0.74381769 0.73105263 0.7504807  0.72421053]
+ [0.73340884 0.73342105 0.7801687  0.71684211]
+ [0.72402444 0.73473684 0.77418494 0.72421053]
+ [0.74650842 0.73421053 0.69904953 0.72736842]
+ [0.72648783 0.73684211 0.72611942 0.73263158]
+ [0.73658021 0.73184211 0.74167775 0.73368421]]
