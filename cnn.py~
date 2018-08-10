@@ -7,13 +7,16 @@ from skimage.transform import resize
 from keras.utils.np_utils import to_categorical
 
 seed = 7
-dim = 51 
-folds = 10
+trFraction = 0.25
+trsize = int(4750*trFraction)
+dim = 65
+featSize = 0
+folds = 4
 split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
-modelSpecs = 'cnnKERAS' #'cnnConv-16-16-32-32-Dense-64-32-12'
+modelSpecs = 'cnnConv-16-16-32-32-Dense-64-64-32-12' #'cnnConv-16-16-32-32-Dense-64-32-12'
 if not os.path.exists('weights/' + modelSpecs):
 	os.makedirs('weights/' + modelSpecs)
 	os.makedirs('predicts/' + modelSpecs)
@@ -25,8 +28,10 @@ unlab = dataPrep.getTestDat(dim)
 #imgs = dataPrep.resizeDat('data/trainImgsRes400stampBW200Fixed.npy', dim)
 #unlab = dataPrep.resizeDat('data/testImgsRes400stampBW200Fixed.npy', dim)
 
-#x, y = dataPrep.shuffleData(imgs, labels, seed)
-xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(imgs, labels, split, folds)
+x, y = dataPrep.shuffleData(imgs, labels, seed)
+x = x[:trsize]
+y = y[:trsize]
+xtrSp, ytrSp, xteSp, yteSp = dataPrep.DatSplit(x, y, split, folds)
 
 
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
@@ -62,7 +67,8 @@ else:
 	print 'Created and saved model.'
 	print ' '
 '''
-model = dataPrep.getcnnKERAS(dim)
+model = dataPrep.getcnnKERAS(dim, featSize)
+#model = dataPrep.getcnn(dim)
 # Initialize the vectors to hold the final performance. tr loss, tr percent, te loss, te percent
 results = np.zeros((folds, 4))
 # Also initialize the predictions matrix
@@ -71,6 +77,7 @@ preds = np.zeros((folds, unlab.shape[0], 12))
 
 # Do the following for each kfold
 for i in range(folds):
+	i += 3 #FIX
 	np.random.seed(seed+i)
 	# Get the appropriate data for the ith kfold from the data split
 	xtr, ytr = xtrSp[i], ytrSp[i]
@@ -83,6 +90,8 @@ for i in range(folds):
 	# The exact save string can be made, now we know the kfold
 	ithSaveStr = saveStr+str(i)+'.hdf5'
 	# Pull good weights or run the cnn
+	if os.path.exists(ithSaveStr): # FIX
+		os.remove(ithSaveStr) # FIX
 	if os.path.exists(ithSaveStr):
 		print ' '
 		print 'Pulling kfold', i, 'from previous runs'
@@ -93,7 +102,7 @@ for i in range(folds):
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '
-			callbacks = dataPrep.get_callbacksKERAS(filepath=ithSaveStr, patience=100)
+			callbacks = dataPrep.get_callbacks(filepath=ithSaveStr,80)
 			# Fit the model
 			model.fit(xtr, ytr_binary,
 				batch_size=bsize,
@@ -104,7 +113,7 @@ for i in range(folds):
 
 	else:
 		print 'No saved trial for kfold.'
-		callbacks = dataPrep.get_callbacksKERAS(filepath=ithSaveStr, patience=100)
+		callbacks = dataPrep.get_callbacks(filepath=ithSaveStr,80)
 		# Fit the model
 		model.fit(xtr, ytr_binary,
 			batch_size=bsize,

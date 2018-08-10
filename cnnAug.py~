@@ -38,13 +38,13 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 
 # Constants ---------- Constants ---------- Constants ---------- Constants ---------- Constants
 
-seed = 7
+seed = 7 
 #np.random.seed(seed)
-trFraction = 0.25
+trFraction = 1
 trsize = int(4750*trFraction)
 dim = 51 
 featSize = 2
-folds = 10
+folds = 1
 split = 0.2
 cutoff= 0.90
 epo = 500

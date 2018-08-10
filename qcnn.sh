@@ -1,4 +1,4 @@
-#PBS -N runCnnKERAS8-8
+#PBS -N runCnn48-10
 #PBS -l walltime=50:00:00
 #PBS -l nodes=1:ppn=1
 #PBS -l mem=32GB
@@ -21,4 +21,4 @@ source activate local
 
 #python -u icecnn.py $PBS_ARRAYID >& outIceCnn7-2_$PBS_ARRAYID.log
 # h, flip, iters, pseusize
-python -u cnn.py >& outCnnKERAS8-8.log
+python -u cnn.py >& outCnn48-10.log

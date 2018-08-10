@@ -38,7 +38,7 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 
 # Constants ---------- Constants ---------- Constants ---------- Constants ---------- Constants
 
-seed = 7
+seed = 7 
 #np.random.seed(seed)
 trFraction = 1
 trsize = int(4750*trFraction)

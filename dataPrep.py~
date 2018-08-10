@@ -148,6 +148,7 @@ def shuffleData(xtr, ytr, ind):
 def sciShuffle(xtr, x2tr, ytr, ind):
 	from sklearn.utils import shuffle
 	X, X2, y = shuffle(xtr, x2tr, ytr, random_state=ind)
+	return X, X2, y
 
 def getcnn(imgsize):
 	from keras.models import Model
@@ -165,7 +166,10 @@ def getcnn(imgsize):
 	c = input_1
 	for i in range(len(convFilters)):
 		c = Conv2D(convFilters[i], kernel_size = (3,3), activation=p_activation) (c)
-		c = MaxPooling2D((2,2)) (c)
+		c = BatchNormalization(axis=3)(c)# added
+		c = Conv2D(convFilters[i], kernel_size = (2,2), activation=p_activation) (c) # added
+		c = MaxPooling2D((2,2)) (c)# added
+		c = BatchNormalization(axis=3)(c)
 		c = Dropout(0.2)(c)
 
 	d = Flatten()(c)
@@ -253,7 +257,7 @@ def getTsne2Cnn(imgsize, pcasize):
 
 	d = concatenate([d, input_2])
 
-	denseFilters = [64, 32]
+	denseFilters = [64, 64, 32]
 	
 	for i in range(len(denseFilters)):
 		d = Dense(denseFilters[i], activation=p_activation)(d)
@@ -267,7 +271,7 @@ def getTsne2Cnn(imgsize, pcasize):
 	optimizer = Adam(lr=1e-4) #1e-4
 	#optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True)
 	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
-	model.summary()
+	#model.summary()
 	return model
 
 def getcnnKERAS(imgsize, featsize):
@@ -333,8 +337,8 @@ def getcnnKERAS(imgsize, featsize):
 	# The first 50 epochs are used by Adam opt.
 	# Then 30 epochs are used by SGD opt.
 
-	#mypotim = Adam(lr=2 * 1e-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
-	mypotim = SGD(lr=1 * 1e-1, momentum=0.9, nesterov=True)
+	mypotim = Adam(lr=2 * 1e-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+	#mypotim = SGD(lr=1 * 1e-1, momentum=0.9, nesterov=True)	# FIX
 	model.compile(loss='categorical_crossentropy',
 	                optimizer=mypotim,
 	                metrics=['accuracy'])
@@ -343,9 +347,10 @@ def getcnnKERAS(imgsize, featsize):
 
 def get_callbacksKERAS(filepath, pat=5):
 	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
-	lr_reduce = ReduceLROnPlateau(monitor='val_acc', factor=0.1, epsilon=1e-5, patience=pat, verbose=1)
-	msave = ModelCheckpoint(filepath, save_best_only=True)
-	return [lr_reduce, msave]
+	es = EarlyStopping('val_loss', patience=pat, mode="min")
+	lr_reduce = ReduceLROnPlateau(monitor='val_acc',factor=0.1,min_lr=1e-6,epsilon=1e-5,patience=8,verbose=1)
+	msave = ModelCheckpoint(filepath,monitor='val_acc',save_best_only=True,save_weights_only=True)
+	return [es, lr_reduce, msave]
 
 # We choose a high patience so the algorthim keeps searching even after finding a maximum
 def get_callbacks(filepath, patience=8):
@@ -353,7 +358,7 @@ def get_callbacks(filepath, patience=8):
 	
 	es = EarlyStopping('loss', patience=patience, mode="min")
 	msave = ModelCheckpoint(filepath,monitor='val_acc',save_best_only=True,save_weights_only=True)
-	reduce_lr = ReduceLROnPlateau(monitor='val_acc',factor=0.2,patience=15,min_lr=1e-6,mode="min")
+	reduce_lr = ReduceLROnPlateau(monitor='val_acc',factor=0.2,patience=15,min_lr=1e-6,mode="max")
 	return [es, msave, reduce_lr]
 
 

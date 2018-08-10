@@ -1,0 +1,56 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+ 
+Found train data with correct size
+ 
+ 
+Found test data with correct size
+ 
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+No saved trial for kfold.
+Train on 949 samples, validate on 238 samples
+Epoch 1/500
+2018-08-10 15:09:31.264488: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-10 15:09:31.264520: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+262s - loss: 2.0046 - acc: 0.3656 - val_loss: 3.8438 - val_acc: 0.0504
+Epoch 2/500
+259s - loss: 1.5158 - acc: 0.5237 - val_loss: 3.6361 - val_acc: 0.0504
+Epoch 3/500
+259s - loss: 1.3676 - acc: 0.5848 - val_loss: 3.5044 - val_acc: 0.0504
+Epoch 4/500
+259s - loss: 1.2024 - acc: 0.6554 - val_loss: 3.3504 - val_acc: 0.1429
+Epoch 5/500
+258s - loss: 1.0721 - acc: 0.6986 - val_loss: 3.3128 - val_acc: 0.1429
+Epoch 6/500
+258s - loss: 0.9322 - acc: 0.7524 - val_loss: 3.4398 - val_acc: 0.1429
+Epoch 7/500
+258s - loss: 0.8935 - acc: 0.7545 - val_loss: 3.4633 - val_acc: 0.1429
+Epoch 8/500
+258s - loss: 0.8341 - acc: 0.7777 - val_loss: 3.6751 - val_acc: 0.0630
+Epoch 9/500
+258s - loss: 0.7626 - acc: 0.7924 - val_loss: 3.6258 - val_acc: 0.1429
+Epoch 10/500
+258s - loss: 0.6947 - acc: 0.8272 - val_loss: 3.3806 - val_acc: 0.1471
+Epoch 11/500
+258s - loss: 0.6047 - acc: 0.8599 - val_loss: 3.1013 - val_acc: 0.1555
+Epoch 12/500
+258s - loss: 0.5972 - acc: 0.8556 - val_loss: 3.3624 - val_acc: 0.1597
+Epoch 13/500
+258s - loss: 0.5229 - acc: 0.8799 - val_loss: 3.0704 - val_acc: 0.1597
+Epoch 14/500
+258s - loss: 0.4874 - acc: 0.8883 - val_loss: 2.7318 - val_acc: 0.2311
+Epoch 15/500
+258s - loss: 0.4684 - acc: 0.8894 - val_loss: 1.9891 - val_acc: 0.4076
+Epoch 16/500
+258s - loss: 0.4439 - acc: 0.9062 - val_loss: 1.7865 - val_acc: 0.4286
+Epoch 17/500
+258s - loss: 0.4238 - acc: 0.8967 - val_loss: 1.4593 - val_acc: 0.5378
+Epoch 18/500
+258s - loss: 0.4309 - acc: 0.9083 - val_loss: 1.1874 - val_acc: 0.6387
+Epoch 19/500
+258s - loss: 0.3427 - acc: 0.9283 - val_loss: 1.3357 - val_acc: 0.6303
+Epoch 20/500
+258s - loss: 0.3341 - acc: 0.9452 - val_loss: 1.0286 - val_acc: 0.6933
+Epoch 21/500
