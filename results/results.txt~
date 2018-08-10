@@ -23,6 +23,7 @@ Normal nn, 20 folds results. Mean score: 0.84886
  [0.24566165 0.91210526 0.25355344 0.89894737]
  [0.24692043 0.90736842 0.24674379 0.91894737]]
 
+
 TSNE 2 dim 100, old model: PCA whitenend stamp images y-forked into model
 
 [[0.66510884 0.75289474 0.93707012 0.68      ]
