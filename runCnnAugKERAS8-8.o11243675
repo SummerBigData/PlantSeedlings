@@ -1,0 +1,18 @@
+discarding /usr/local/anaconda/anaconda2/bin from PATH
+prepending /users/PAS1383/osu10171/.conda/envs/local/bin to PATH
+/users/PAS1383/osu10171/PlantSeedlings
+/var/spool/batch/torque/mom_priv/jobs/11243675.oak-batch.osc.edu.SC: line 40: 29683 Killed                  python -u cnnAug.py &>outCnnAugKERAS8-8.log
+
+-----------------------
+Resources requested:
+nodes=1:ppn=1
+mem=32gb
+-----------------------
+Resources used:
+cput=34:07:39
+walltime=34:08:37
+mem=32.719 GB
+vmem=45.754 GB
+-----------------------
+Resource units charged (estimate):
+-----------------------

@@ -461,3 +461,107 @@ Epoch 183/500
 Epoch 184/500
 591s - loss: 0.0013 - acc: 1.0000 - val_loss: 0.4691 - val_acc: 0.9137
 Epoch 185/500
+590s - loss: 9.9650e-04 - acc: 0.9997 - val_loss: 0.4772 - val_acc: 0.9105
+Epoch 186/500
+590s - loss: 8.2889e-04 - acc: 0.9997 - val_loss: 0.4953 - val_acc: 0.9158
+Epoch 187/500
+590s - loss: 0.0014 - acc: 0.9995 - val_loss: 0.5399 - val_acc: 0.9074
+Epoch 188/500
+590s - loss: 0.0014 - acc: 0.9995 - val_loss: 0.4727 - val_acc: 0.9221
+Epoch 189/500
+590s - loss: 0.0011 - acc: 0.9997 - val_loss: 0.4682 - val_acc: 0.9158
+Epoch 190/500
+590s - loss: 0.0042 - acc: 0.9984 - val_loss: 0.5071 - val_acc: 0.9105
+Epoch 191/500
+590s - loss: 0.0018 - acc: 0.9992 - val_loss: 0.4492 - val_acc: 0.8979
+Epoch 192/500
+590s - loss: 0.0056 - acc: 0.9982 - val_loss: 0.5543 - val_acc: 0.8853
+Epoch 193/500
+590s - loss: 0.0016 - acc: 1.0000 - val_loss: 0.4830 - val_acc: 0.9032
+Epoch 194/500
+590s - loss: 0.0016 - acc: 0.9992 - val_loss: 0.4753 - val_acc: 0.9126
+Epoch 195/500
+590s - loss: 0.0015 - acc: 0.9995 - val_loss: 0.5388 - val_acc: 0.9021
+Epoch 196/500
+591s - loss: 0.0064 - acc: 0.9984 - val_loss: 0.5362 - val_acc: 0.8884
+Epoch 197/500
+590s - loss: 0.0051 - acc: 0.9987 - val_loss: 0.5880 - val_acc: 0.9042
+Epoch 198/500
+590s - loss: 0.0050 - acc: 0.9976 - val_loss: 0.8500 - val_acc: 0.8221
+Epoch 199/500
+590s - loss: 0.0063 - acc: 0.9987 - val_loss: 0.5497 - val_acc: 0.8832
+Epoch 200/500
+590s - loss: 0.0039 - acc: 0.9992 - val_loss: 0.6032 - val_acc: 0.9053
+Epoch 201/500
+590s - loss: 0.0048 - acc: 0.9982 - val_loss: 0.5788 - val_acc: 0.8842
+Epoch 202/500
+590s - loss: 0.0028 - acc: 0.9987 - val_loss: 0.5414 - val_acc: 0.9011
+Epoch 203/500
+589s - loss: 0.0027 - acc: 0.9997 - val_loss: 0.5533 - val_acc: 0.9000
+Epoch 204/500
+590s - loss: 0.0046 - acc: 0.9984 - val_loss: 0.4644 - val_acc: 0.8989
+Epoch 205/500
+590s - loss: 0.0016 - acc: 0.9995 - val_loss: 0.4357 - val_acc: 0.9137
+Epoch 206/500
+591s - loss: 0.0019 - acc: 0.9992 - val_loss: 0.5462 - val_acc: 0.8979
+Epoch 207/500
+589s - loss: 0.0032 - acc: 0.9992 - val_loss: 0.4755 - val_acc: 0.9095
+Epoch 208/500
+590s - loss: 0.0014 - acc: 0.9997 - val_loss: 0.4522 - val_acc: 0.9116
+Epoch 209/500
+587s - loss: 0.0076 - acc: 0.9976 - val_loss: 0.5216 - val_acc: 0.9032
+Epoch 210/500
+581s - loss: 0.0016 - acc: 0.9997 - val_loss: 0.4809 - val_acc: 0.9147
+Epoch 211/500
+581s - loss: 0.0032 - acc: 0.9989 - val_loss: 0.4918 - val_acc: 0.8937
+Epoch 212/500
+581s - loss: 0.0067 - acc: 0.9974 - val_loss: 0.6615 - val_acc: 0.8811
+Epoch 213/500
+2018-08-10 21:11:13.695001: W tensorflow/core/framework/op_kernel.cc:1192] Resource exhausted: OOM when allocating tensor with shape[25,21,21,128]
+Traceback (most recent call last):
+  File "cnn.py", line 103, in <module>
+    print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/engine/training.py", line 1507, in fit
+    initial_epoch=initial_epoch)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/engine/training.py", line 1156, in _fit_loop
+    outs = f(ins_batch)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/backend/tensorflow_backend.py", line 2269, in __call__
+    **self.session_kwargs)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 895, in run
+    run_metadata_ptr)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 1124, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 1321, in _do_run
+    options, run_metadata)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 1340, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[25,21,21,128]
+	 [[Node: batch_normalization_3/moments/SquaredDifference = SquaredDifference[T=DT_FLOAT, _device="/job:localhost/replica:0/task:0/cpu:0"](conv2d_3/BiasAdd, batch_normalization_3/moments/StopGradient)]]
+
+Caused by op u'batch_normalization_3/moments/SquaredDifference', defined at:
+  File "cnn.py", line 65, in <module>
+    model = dataPrep.getcnnKERAS(dim)
+  File "/users/PAS1383/osu10171/PlantSeedlings/dataPrep.py", line 305, in getcnnKERAS
+    input1 = Input(shape=(imgsize, imgsize, 3))
+  File "/users/PAS1383/osu10171/PlantSeedlings/dataPrep.py", line 294, in conv_layer
+    # Conv. layers set
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/engine/topology.py", line 596, in __call__
+    output = self.call(inputs, **kwargs)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/layers/normalization.py", line 177, in call
+    epsilon=self.epsilon)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/backend/tensorflow_backend.py", line 1648, in normalize_batch_in_training
+    shift=None, name=None, keep_dims=False)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/ops/nn_impl.py", line 621, in moments
+    math_ops.squared_difference(y, array_ops.stop_gradient(mean)),
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/ops/gen_math_ops.py", line 2610, in squared_difference
+    result = _op_def_lib.apply_op("SquaredDifference", x=x, y=y, name=name)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/framework/op_def_library.py", line 767, in apply_op
+    op_def=op_def)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/framework/ops.py", line 2630, in create_op
+    original_op=self._default_original_op, op_def=op_def)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/framework/ops.py", line 1204, in __init__
+    self._traceback = self._graph._extract_stack()  # pylint: disable=protected-access
+
+ResourceExhaustedError (see above for traceback): OOM when allocating tensor with shape[25,21,21,128]
+	 [[Node: batch_normalization_3/moments/SquaredDifference = SquaredDifference[T=DT_FLOAT, _device="/job:localhost/replica:0/task:0/cpu:0"](conv2d_3/BiasAdd, batch_normalization_3/moments/StopGradient)]]
+

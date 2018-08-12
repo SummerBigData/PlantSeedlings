@@ -308,3 +308,194 @@ Epoch 142/500
 Epoch 143/500
 584s - loss: 0.0223 - acc: 0.9937 - val_loss: 0.3861 - val_acc: 0.9084
 Epoch 144/500
+584s - loss: 0.0197 - acc: 0.9961 - val_loss: 0.3867 - val_acc: 0.9084
+Epoch 145/500
+584s - loss: 0.0205 - acc: 0.9955 - val_loss: 0.3859 - val_acc: 0.9074
+Epoch 146/500
+584s - loss: 0.0203 - acc: 0.9958 - val_loss: 0.3864 - val_acc: 0.9084
+Epoch 147/500
+584s - loss: 0.0196 - acc: 0.9963 - val_loss: 0.3861 - val_acc: 0.9084
+Epoch 148/500
+584s - loss: 0.0180 - acc: 0.9963 - val_loss: 0.3859 - val_acc: 0.9084
+Epoch 149/500
+584s - loss: 0.0199 - acc: 0.9968 - val_loss: 0.3875 - val_acc: 0.9084
+Epoch 150/500
+584s - loss: 0.0219 - acc: 0.9950 - val_loss: 0.3863 - val_acc: 0.9084
+Epoch 151/500
+584s - loss: 0.0234 - acc: 0.9950 - val_loss: 0.3872 - val_acc: 0.9084
+Epoch 152/500
+585s - loss: 0.0183 - acc: 0.9968 - val_loss: 0.3851 - val_acc: 0.9084
+Epoch 153/500
+585s - loss: 0.0240 - acc: 0.9939 - val_loss: 0.3870 - val_acc: 0.9074
+Epoch 154/500
+584s - loss: 0.0224 - acc: 0.9947 - val_loss: 0.3878 - val_acc: 0.9053
+Epoch 155/500
+585s - loss: 0.0206 - acc: 0.9961 - val_loss: 0.3833 - val_acc: 0.9084
+Epoch 156/500
+585s - loss: 0.0193 - acc: 0.9958 - val_loss: 0.3845 - val_acc: 0.9084
+Epoch 157/500
+585s - loss: 0.0163 - acc: 0.9976 - val_loss: 0.3862 - val_acc: 0.9042
+Epoch 158/500
+585s - loss: 0.0180 - acc: 0.9968 - val_loss: 0.3871 - val_acc: 0.9074
+Epoch 159/500
+584s - loss: 0.0219 - acc: 0.9950 - val_loss: 0.3861 - val_acc: 0.9074
+Epoch 160/500
+585s - loss: 0.0218 - acc: 0.9953 - val_loss: 0.3879 - val_acc: 0.9074
+Epoch 161/500
+584s - loss: 0.0223 - acc: 0.9947 - val_loss: 0.3875 - val_acc: 0.9074
+Epoch 162/500
+584s - loss: 0.0227 - acc: 0.9945 - val_loss: 0.3873 - val_acc: 0.9084
+Epoch 163/500
+584s - loss: 0.0208 - acc: 0.9958 - val_loss: 0.3845 - val_acc: 0.9084
+Training loss for fold 0 is 0.004674230396600539 with percent 99.94736842105263
+Testing loss for fold 0 is 0.3648348343999762 with percent 91.15789479958384
+ 
+No saved trial for kfold.
+Train on 3800 samples, validate on 950 samples
+Epoch 1/500
+585s - loss: 0.0990 - acc: 0.9763 - val_loss: 0.0898 - val_acc: 0.9747
+Epoch 2/500
+585s - loss: 0.1004 - acc: 0.9729 - val_loss: 0.0902 - val_acc: 0.9747
+Epoch 3/500
+585s - loss: 0.1084 - acc: 0.9753 - val_loss: 0.0903 - val_acc: 0.9747
+Epoch 4/500
+586s - loss: 0.1107 - acc: 0.9729 - val_loss: 0.0914 - val_acc: 0.9747
+Epoch 5/500
+586s - loss: 0.1087 - acc: 0.9737 - val_loss: 0.0910 - val_acc: 0.9747
+Epoch 6/500
+586s - loss: 0.1106 - acc: 0.9721 - val_loss: 0.0907 - val_acc: 0.9747
+Epoch 7/500
+585s - loss: 0.1043 - acc: 0.9758 - val_loss: 0.0904 - val_acc: 0.9747
+Epoch 8/500
+585s - loss: 0.1133 - acc: 0.9705 - val_loss: 0.0914 - val_acc: 0.9747
+Epoch 9/500
+585s - loss: 0.1064 - acc: 0.9732 - val_loss: 0.0906 - val_acc: 0.9747
+Epoch 10/500
+585s - loss: 0.1066 - acc: 0.9721 - val_loss: 0.0911 - val_acc: 0.9747
+Epoch 11/500
+585s - loss: 0.1076 - acc: 0.9753 - val_loss: 0.0904 - val_acc: 0.9747
+Epoch 12/500
+585s - loss: 0.1118 - acc: 0.9721 - val_loss: 0.0902 - val_acc: 0.9747
+Epoch 13/500
+585s - loss: 0.1001 - acc: 0.9711 - val_loss: 0.0908 - val_acc: 0.9747
+Epoch 14/500
+585s - loss: 0.1022 - acc: 0.9763 - val_loss: 0.0905 - val_acc: 0.9747
+Epoch 15/500
+585s - loss: 0.1168 - acc: 0.9711 - val_loss: 0.0907 - val_acc: 0.9747
+Epoch 16/500
+585s - loss: 0.1144 - acc: 0.9729 - val_loss: 0.0903 - val_acc: 0.9747
+Epoch 17/500
+585s - loss: 0.1123 - acc: 0.9708 - val_loss: 0.0901 - val_acc: 0.9747
+Epoch 18/500
+585s - loss: 0.1010 - acc: 0.9745 - val_loss: 0.0896 - val_acc: 0.9747
+Epoch 19/500
+585s - loss: 0.1087 - acc: 0.9732 - val_loss: 0.0896 - val_acc: 0.9747
+Epoch 20/500
+585s - loss: 0.1023 - acc: 0.9750 - val_loss: 0.0903 - val_acc: 0.9747
+Epoch 21/500
+585s - loss: 0.1057 - acc: 0.9745 - val_loss: 0.0907 - val_acc: 0.9747
+Epoch 22/500
+585s - loss: 0.1006 - acc: 0.9724 - val_loss: 0.0903 - val_acc: 0.9747
+Epoch 23/500
+585s - loss: 0.1005 - acc: 0.9745 - val_loss: 0.0902 - val_acc: 0.9747
+Epoch 24/500
+585s - loss: 0.1033 - acc: 0.9753 - val_loss: 0.0900 - val_acc: 0.9747
+Epoch 25/500
+585s - loss: 0.1066 - acc: 0.9724 - val_loss: 0.0903 - val_acc: 0.9747
+Epoch 26/500
+585s - loss: 0.1076 - acc: 0.9724 - val_loss: 0.0912 - val_acc: 0.9747
+Epoch 27/500
+585s - loss: 0.1078 - acc: 0.9729 - val_loss: 0.0908 - val_acc: 0.9747
+Epoch 28/500
+585s - loss: 0.1054 - acc: 0.9737 - val_loss: 0.0904 - val_acc: 0.9747
+Epoch 29/500
+585s - loss: 0.1045 - acc: 0.9745 - val_loss: 0.0901 - val_acc: 0.9747
+Epoch 30/500
+585s - loss: 0.1131 - acc: 0.9718 - val_loss: 0.0904 - val_acc: 0.9747
+Epoch 31/500
+585s - loss: 0.1073 - acc: 0.9718 - val_loss: 0.0913 - val_acc: 0.9747
+Epoch 32/500
+585s - loss: 0.0983 - acc: 0.9779 - val_loss: 0.0905 - val_acc: 0.9747
+Epoch 33/500
+585s - loss: 0.1151 - acc: 0.9718 - val_loss: 0.0903 - val_acc: 0.9747
+Epoch 34/500
+585s - loss: 0.1102 - acc: 0.9755 - val_loss: 0.0907 - val_acc: 0.9747
+Epoch 35/500
+585s - loss: 0.1063 - acc: 0.9742 - val_loss: 0.0899 - val_acc: 0.9747
+Epoch 36/500
+585s - loss: 0.1046 - acc: 0.9739 - val_loss: 0.0900 - val_acc: 0.9747
+Epoch 37/500
+585s - loss: 0.1073 - acc: 0.9700 - val_loss: 0.0896 - val_acc: 0.9747
+Epoch 38/500
+585s - loss: 0.1038 - acc: 0.9742 - val_loss: 0.0908 - val_acc: 0.9747
+Epoch 39/500
+585s - loss: 0.1087 - acc: 0.9750 - val_loss: 0.0901 - val_acc: 0.9747
+Epoch 40/500
+585s - loss: 0.1094 - acc: 0.9718 - val_loss: 0.0900 - val_acc: 0.9747
+Epoch 41/500
+585s - loss: 0.1062 - acc: 0.9716 - val_loss: 0.0898 - val_acc: 0.9747
+Epoch 42/500
+585s - loss: 0.1081 - acc: 0.9739 - val_loss: 0.0906 - val_acc: 0.9747
+Epoch 43/500
+585s - loss: 0.1153 - acc: 0.9721 - val_loss: 0.0901 - val_acc: 0.9747
+Epoch 44/500
+585s - loss: 0.1072 - acc: 0.9721 - val_loss: 0.0901 - val_acc: 0.9747
+Epoch 45/500
+586s - loss: 0.1028 - acc: 0.9763 - val_loss: 0.0908 - val_acc: 0.9747
+Epoch 46/500
+585s - loss: 0.1168 - acc: 0.9708 - val_loss: 0.0911 - val_acc: 0.9747
+Epoch 47/500
+585s - loss: 0.1151 - acc: 0.9700 - val_loss: 0.0901 - val_acc: 0.9747
+Epoch 48/500
+585s - loss: 0.1106 - acc: 0.9726 - val_loss: 0.0904 - val_acc: 0.9747
+Epoch 49/500
+585s - loss: 0.1004 - acc: 0.9745 - val_loss: 0.0904 - val_acc: 0.9747
+Epoch 50/500
+2018-08-11 03:51:38.021176: W tensorflow/core/framework/op_kernel.cc:1192] Resource exhausted: OOM when allocating tensor with shape[25,21,21,128]
+Traceback (most recent call last):
+  File "cnnAug.py", line 168, in <module>
+    callbacks=callbacks)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/engine/training.py", line 1507, in fit
+    initial_epoch=initial_epoch)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/engine/training.py", line 1156, in _fit_loop
+    outs = f(ins_batch)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/backend/tensorflow_backend.py", line 2269, in __call__
+    **self.session_kwargs)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 895, in run
+    run_metadata_ptr)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 1124, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 1321, in _do_run
+    options, run_metadata)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/client/session.py", line 1340, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[25,21,21,128]
+	 [[Node: batch_normalization_3/moments/SquaredDifference = SquaredDifference[T=DT_FLOAT, _device="/job:localhost/replica:0/task:0/cpu:0"](conv2d_3/BiasAdd, batch_normalization_3/moments/StopGradient)]]
+
+Caused by op u'batch_normalization_3/moments/SquaredDifference', defined at:
+  File "cnnAug.py", line 118, in <module>
+    model = dataPrep.getcnnKERAS(dim, featSize)
+  File "/users/PAS1383/osu10171/PlantSeedlings/dataPrep.py", line 309, in getcnnKERAS
+    conv2 = conv_layer(conv1, 64, zp_flag=False)
+  File "/users/PAS1383/osu10171/PlantSeedlings/dataPrep.py", line 298, in conv_layer
+    else:
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/engine/topology.py", line 596, in __call__
+    output = self.call(inputs, **kwargs)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/layers/normalization.py", line 177, in call
+    epsilon=self.epsilon)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/keras/backend/tensorflow_backend.py", line 1648, in normalize_batch_in_training
+    shift=None, name=None, keep_dims=False)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/ops/nn_impl.py", line 621, in moments
+    math_ops.squared_difference(y, array_ops.stop_gradient(mean)),
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/ops/gen_math_ops.py", line 2610, in squared_difference
+    result = _op_def_lib.apply_op("SquaredDifference", x=x, y=y, name=name)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/framework/op_def_library.py", line 767, in apply_op
+    op_def=op_def)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/framework/ops.py", line 2630, in create_op
+    original_op=self._default_original_op, op_def=op_def)
+  File "/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/tensorflow/python/framework/ops.py", line 1204, in __init__
+    self._traceback = self._graph._extract_stack()  # pylint: disable=protected-access
+
+ResourceExhaustedError (see above for traceback): OOM when allocating tensor with shape[25,21,21,128]
+	 [[Node: batch_normalization_3/moments/SquaredDifference = SquaredDifference[T=DT_FLOAT, _device="/job:localhost/replica:0/task:0/cpu:0"](conv2d_3/BiasAdd, batch_normalization_3/moments/StopGradient)]]
+
