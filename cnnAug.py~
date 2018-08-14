@@ -9,7 +9,7 @@ from keras.utils.np_utils import to_categorical
 # Definitions ---------- Definitions ---------- Definitions ---------- Definitions ---------- Definitions
 
 def DatAug(xSt, unlSt, xtsne, unltsne):
-	'''
+	
 	from sklearn.decomposition import PCA
 	from sklearn import preprocessing
 
@@ -32,7 +32,7 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 	'''
 	xSt = xtsne
 	unlSt = unltsne
-	
+	'''
 	#print xSt.min(), xSt.max(), unlSt.min(), unlSt.max()
 	return xSt, unlSt
 
@@ -40,17 +40,17 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 
 seed = 7 
 #np.random.seed(seed)
-trFraction = 1
+trFraction = 1 # FIX
 trsize = int(4750*trFraction)
-dim = 51 
-featSize = 2
-folds = 1
+dim = 75 
+featSize = 102
+folds = 10
 split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
 
-modelSpecs = 'cnnAugJustTSNEKERAS' #'cnnConv-16-16-32-32-Dense-64-32-12'
+modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-'+str(int(dim))+'-date-8-13'
 if not os.path.exists('weights/' + modelSpecs):
 	os.makedirs('weights/' + modelSpecs)
 	os.makedirs('predicts/' + modelSpecs)
@@ -115,7 +115,7 @@ modelStr = 'models/'+ modelSpecs + str(dim)
 #	print ' '
 
 
-model = dataPrep.getcnnKERAS(dim, featSize)
+
 # Initialize the vectors to hold the final performance. tr loss, tr percent, te loss, te percent
 results = np.zeros((folds, 4))
 # Also initialize the predictions matrix
@@ -133,9 +133,12 @@ for i in range(folds):
 	# Need labels in matrix shape for the model, so convert to binary
 	ytr_binary = to_categorical(ytr)
 	yte_binary = to_categorical(yte)
-
+	# Load the model each time. This way, it doesn't remember anything about previous runs
+	model = dataPrep.getCnnAug(dim, featSize)
 	# The exact save string can be made, now we know the kfold
 	ithSaveStr = saveStr+str(i)+'.hdf5'
+	#if os.path.exists(ithSaveStr):
+	#	os.remove(ithSaveStr)		# FIX
 	# Pull good weights or run the cnn
 	if os.path.exists(ithSaveStr):
 		print ' '
@@ -147,7 +150,7 @@ for i in range(folds):
 			print ' '
 			print "Bad saved trial. Testing acc <"+str(cutoff)+"%. Rerunning ..."
 			print ' '
-			callbacks = dataPrep.get_callbacks(filepath=ithSaveStr, patience=60)
+			callbacks = dataPrep.get_callbacksKERAS(filepath=ithSaveStr, patience=60)
 			# Fit the model
 			model.fit([xtr, xsttr], ytr_binary,
 				batch_size=bsize,
@@ -158,7 +161,7 @@ for i in range(folds):
 
 	else:
 		print 'No saved trial for kfold.'
-		callbacks = dataPrep.get_callbacks(filepath=ithSaveStr, patience=60)
+		callbacks = dataPrep.get_callbacksKERAS(filepath=ithSaveStr, patience=60)
 		# Fit the model
 		model.fit([xtr, xsttr], ytr_binary,
 			batch_size=bsize,
@@ -182,9 +185,10 @@ for i in range(folds):
 	print 'Training loss for fold',i,'is', results[i,0],'with percent',results[i,1]*100
 	print 'Testing loss for fold',i,'is', results[i,2],'with percent',results[i,3]*100
 	print ' '
+	np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-13', preds)
 
 print 'Prediction dims', preds.shape
-np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-9', preds)
+np.save('predicts/'+modelSpecs+'/predDim'+str(dim)+'Folds'+str(folds)+'split'+str(split)+'8-13', preds)
 
 print 'Done training kfolds. Results:'
 print results

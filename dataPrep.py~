@@ -192,44 +192,65 @@ def getcnn(imgsize):
 	model.summary()
 	return model
 
-def getTsneCnn(imgsize):
+def getCnnAug(imgsize, featsize):
 	from keras.models import Model
 	from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, Activation, Input
+	from keras.layers import concatenate
 	from keras.optimizers import Adam, SGD	
 	from keras.layers.normalization import BatchNormalization
+	from keras.layers.advanced_activations import LeakyReLU
 	#from keras import regularizers
 
-	p_activation = "relu"
-	input_1 = Input(shape=(imgsize, imgsize, 1))
-	#input_2 = Input(shape=[1], name="angle")
+	d_activation = "relu"
+	c_activation = "LeakyReLU"
+	input1 = Input(shape=(imgsize, imgsize, 3))
 	
-	convFilters = [16, 16, 32, 32]
+	#convFilters = [16, 16, 32, 32]
+	convFilters = [16, 32, 64]
 	
-	c = input_1
+	c = input1
 	for i in range(len(convFilters)):
-		c = Conv2D(convFilters[i], kernel_size = (3,3), activation=p_activation) (c)
-		c = MaxPooling2D((2,2)) (c)
+		c = Conv2D(convFilters[i], kernel_size = (3,3)) (c)
+		c = BatchNormalization(axis=3)(c)# added
+		c = LeakyReLU(0.1)(c)
+
+		c = Conv2D(convFilters[i], kernel_size = (2,2)) (c) # added
+		c = BatchNormalization(axis=3)(c)
+		c = LeakyReLU(0.1)(c)
+
+		c = MaxPooling2D((2,2)) (c)# added
 		c = Dropout(0.2)(c)
 
 	d = Flatten()(c)
 	d = BatchNormalization()(d)
 
+	# If there are additional features to add, do it now
+	if featsize > 0:
+		input2 = Input(shape=(featsize,))
+		d = concatenate([d, input2])
+		d = Dense(128, activation=c_activation)(d)
+
+	#denseFilters = [64, 32]
 	denseFilters = [64, 32]
 	
 	for i in range(len(denseFilters)):
-		d = Dense(denseFilters[i], activation=p_activation)(d)
+		d = Dense(denseFilters[i], activation=d_activation)(d)
 		d = Dropout(0.2)(d)
 	
-	output = Dense(12, activation="softmax")(d)
+	out = Dense(12, activation="softmax")(d)
 
-	model = Model(input_1,  output)
+	if featsize > 0:
+		model = Model(inputs=[input1, input2], outputs=out)
+	else:
+		model = Model(inputs=input1, outputs=out)
 
 	#optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-	optimizer = Adam(lr=1e-4) #1e-4
-	#optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True)
+	#optimizer = Adam(lr=1e-4) #1e-4
+	optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True, clipnorm=1)
 	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 	model.summary()
 	return model
+
 
 def getTsne2Cnn(imgsize, pcasize):
 	from keras.models import Model
@@ -345,9 +366,9 @@ def getcnnKERAS(imgsize, featsize):
 	#model.summary()
 	return model
 
-def get_callbacksKERAS(filepath, pat=5):
+def get_callbacksKERAS(filepath, patience=5):
 	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
-	es = EarlyStopping('val_loss', patience=pat, mode="min")
+	es = EarlyStopping('val_loss', patience=patience, mode="min")
 	lr_reduce = ReduceLROnPlateau(monitor='val_acc',factor=0.1,min_lr=1e-6,epsilon=1e-5,patience=8,verbose=1)
 	msave = ModelCheckpoint(filepath,monitor='val_acc',save_best_only=True,save_weights_only=True)
 	return [es, lr_reduce, msave]

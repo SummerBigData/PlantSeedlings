@@ -1,0 +1,106 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+ 
+Found train data with correct size
+ 
+ 
+Found test data with correct size
+ 
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+Augmentation data size (4750, 102) (794, 102)
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+(3800, 65, 65, 3) (3800,)
+____________________________________________________________________________________________________
+Layer (type)                     Output Shape          Param #     Connected to                     
+====================================================================================================
+input_1 (InputLayer)             (None, 65, 65, 3)     0                                            
+____________________________________________________________________________________________________
+conv2d_1 (Conv2D)                (None, 63, 63, 16)    448         input_1[0][0]                    
+____________________________________________________________________________________________________
+batch_normalization_1 (BatchNorm (None, 63, 63, 16)    64          conv2d_1[0][0]                   
+____________________________________________________________________________________________________
+leaky_re_lu_1 (LeakyReLU)        (None, 63, 63, 16)    0           batch_normalization_1[0][0]      
+____________________________________________________________________________________________________
+conv2d_2 (Conv2D)                (None, 62, 62, 16)    1040        leaky_re_lu_1[0][0]              
+____________________________________________________________________________________________________
+batch_normalization_2 (BatchNorm (None, 62, 62, 16)    64          conv2d_2[0][0]                   
+____________________________________________________________________________________________________
+leaky_re_lu_2 (LeakyReLU)        (None, 62, 62, 16)    0           batch_normalization_2[0][0]      
+____________________________________________________________________________________________________
+max_pooling2d_1 (MaxPooling2D)   (None, 31, 31, 16)    0           leaky_re_lu_2[0][0]              
+____________________________________________________________________________________________________
+dropout_1 (Dropout)              (None, 31, 31, 16)    0           max_pooling2d_1[0][0]            
+____________________________________________________________________________________________________
+conv2d_3 (Conv2D)                (None, 29, 29, 32)    4640        dropout_1[0][0]                  
+____________________________________________________________________________________________________
+batch_normalization_3 (BatchNorm (None, 29, 29, 32)    128         conv2d_3[0][0]                   
+____________________________________________________________________________________________________
+leaky_re_lu_3 (LeakyReLU)        (None, 29, 29, 32)    0           batch_normalization_3[0][0]      
+____________________________________________________________________________________________________
+conv2d_4 (Conv2D)                (None, 28, 28, 32)    4128        leaky_re_lu_3[0][0]              
+____________________________________________________________________________________________________
+batch_normalization_4 (BatchNorm (None, 28, 28, 32)    128         conv2d_4[0][0]                   
+____________________________________________________________________________________________________
+leaky_re_lu_4 (LeakyReLU)        (None, 28, 28, 32)    0           batch_normalization_4[0][0]      
+____________________________________________________________________________________________________
+max_pooling2d_2 (MaxPooling2D)   (None, 14, 14, 32)    0           leaky_re_lu_4[0][0]              
+____________________________________________________________________________________________________
+dropout_2 (Dropout)              (None, 14, 14, 32)    0           max_pooling2d_2[0][0]            
+____________________________________________________________________________________________________
+conv2d_5 (Conv2D)                (None, 12, 12, 64)    18496       dropout_2[0][0]                  
+____________________________________________________________________________________________________
+batch_normalization_5 (BatchNorm (None, 12, 12, 64)    256         conv2d_5[0][0]                   
+____________________________________________________________________________________________________
+leaky_re_lu_5 (LeakyReLU)        (None, 12, 12, 64)    0           batch_normalization_5[0][0]      
+____________________________________________________________________________________________________
+conv2d_6 (Conv2D)                (None, 11, 11, 64)    16448       leaky_re_lu_5[0][0]              
+____________________________________________________________________________________________________
+batch_normalization_6 (BatchNorm (None, 11, 11, 64)    256         conv2d_6[0][0]                   
+____________________________________________________________________________________________________
+leaky_re_lu_6 (LeakyReLU)        (None, 11, 11, 64)    0           batch_normalization_6[0][0]      
+____________________________________________________________________________________________________
+max_pooling2d_3 (MaxPooling2D)   (None, 5, 5, 64)      0           leaky_re_lu_6[0][0]              
+____________________________________________________________________________________________________
+dropout_3 (Dropout)              (None, 5, 5, 64)      0           max_pooling2d_3[0][0]            
+____________________________________________________________________________________________________
+flatten_1 (Flatten)              (None, 1600)          0           dropout_3[0][0]                  
+____________________________________________________________________________________________________
+batch_normalization_7 (BatchNorm (None, 1600)          6400        flatten_1[0][0]                  
+____________________________________________________________________________________________________
+input_2 (InputLayer)             (None, 102)           0                                            
+____________________________________________________________________________________________________
+concatenate_1 (Concatenate)      (None, 1702)          0           batch_normalization_7[0][0]      
+                                                                   input_2[0][0]                    
+____________________________________________________________________________________________________
+dense_1 (Dense)                  (None, 128)           217984      concatenate_1[0][0]              
+____________________________________________________________________________________________________
+leaky_re_lu_7 (LeakyReLU)        (None, 128)           0           dense_1[0][0]                    
+____________________________________________________________________________________________________
+dense_2 (Dense)                  (None, 64)            8256        leaky_re_lu_7[0][0]              
+____________________________________________________________________________________________________
+dropout_4 (Dropout)              (None, 64)            0           dense_2[0][0]                    
+____________________________________________________________________________________________________
+dense_3 (Dense)                  (None, 32)            2080        dropout_4[0][0]                  
+____________________________________________________________________________________________________
+dropout_5 (Dropout)              (None, 32)            0           dense_3[0][0]                    
+____________________________________________________________________________________________________
+dense_4 (Dense)                  (None, 12)            396         dropout_5[0][0]                  
+====================================================================================================
+Total params: 281,212
+Trainable params: 277,564
+Non-trainable params: 3,648
+____________________________________________________________________________________________________
+No saved trial for kfold.
+Train on 3800 samples, validate on 950 samples
+Epoch 1/500
+2018-08-13 23:25:48.747347: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-13 23:25:48.748129: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+171s - loss: 1.9600 - acc: 0.3353 - val_loss: 3.2477 - val_acc: 0.2126
+Epoch 2/500
+167s - loss: 1.5704 - acc: 0.4855 - val_loss: 3.2380 - val_acc: 0.3505
+Epoch 3/500
+166s - loss: 1.3909 - acc: 0.5589 - val_loss: 3.8465 - val_acc: 0.2105
+Epoch 4/500
