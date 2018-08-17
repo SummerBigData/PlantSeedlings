@@ -370,7 +370,7 @@ def getcnnKERAS(imgsize, featsize):
 def get_callbacksKERAS(filepath, patience=5):
 	from keras.callbacks import ModelCheckpoint, Callback, EarlyStopping, ReduceLROnPlateau
 	es = EarlyStopping('val_loss', patience=patience, mode="min")
-	lr_reduce = ReduceLROnPlateau(monitor='val_acc',factor=0.1,min_lr=1e-6,epsilon=1e-5,patience=8,verbose=1)
+	lr_reduce = ReduceLROnPlateau(monitor='val_acc',factor=0.1,min_lr=1e-6,epsilon=1e-5,patience=12,verbose=1)
 	msave = ModelCheckpoint(filepath,monitor='val_acc',save_best_only=True,save_weights_only=True)
 	return [es, lr_reduce, msave]
 

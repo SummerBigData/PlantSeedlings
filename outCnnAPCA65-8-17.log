@@ -1,0 +1,24 @@
+Using TensorFlow backend.
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/h5py/__init__.py:34: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+ 
+Found train data with correct size
+ 
+ 
+Found test data with correct size
+ 
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/skimage/transform/_warps.py:84: UserWarning: The default mode, 'constant', will be changed to 'reflect' in skimage 0.15.
+  warn("The default mode, 'constant', will be changed to 'reflect' in "
+Augmentation data size (4750, 100) (794, 100) 100
+/users/PAS1383/osu10171/.conda/envs/local/lib/python2.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+(3800, 65, 65, 3) (3800,)
+ 
+Pulling kfold 0 from previous runs
+2018-08-17 14:53:34.333859: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2018-08-17 14:53:34.334174: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+ 
+Bad saved trial. Testing acc <0.9%. Rerunning ...
+ 
+Train on 3800 samples, validate on 950 samples
+Epoch 1/500

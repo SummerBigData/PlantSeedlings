@@ -47,10 +47,10 @@ names = np.load('data/testNames.npy')
 
 
 meanPred = np.mean(preds, axis = 0)
-medPred = np.median(preds, axis = 0)
+#medPred = np.median(preds, axis = 0)
 
 genSub(meanPred, names, 'Mean')
-genSub(medPred, names, 'Median')
+#genSub(medPred, names, 'Median')
 
 
 

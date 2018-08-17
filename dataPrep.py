@@ -249,7 +249,7 @@ def getCnnAug(imgsize, featsize):
 	#optimizer = Adam(lr=1e-4) #1e-4
 	optimizer = SGD(lr=1e-1, momentum=0.9, nesterov=True, clipnorm=1)
 	model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
-	model.summary()
+	#model.summary()
 	return model
 
 

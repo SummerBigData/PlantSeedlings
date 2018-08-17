@@ -30,9 +30,9 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 	xSt = np.concatenate((xSt, xtsne), axis = 1)
 	unlSt = np.concatenate((unlSt, unltsne), axis = 1)
 	'''
-	#xSt = xtsne
-	#unlSt = unltsne
-	
+	xSt = xtsne
+	unlSt = unltsne
+	'''
 	from sklearn.decomposition import PCA
 	from sklearn import preprocessing
 
@@ -46,7 +46,7 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 	# Scale pca correctly
 	xCombPCA = preprocessing.scale(xCombPCA)
 	xSt, unlSt = xCombPCA[ :xSt.shape[0] ], xCombPCA[ xSt.shape[0]: ]
-	
+	'''
 	#print xSt.min(), xSt.max(), unlSt.min(), unlSt.max()
 	return xSt, unlSt
 
@@ -56,14 +56,14 @@ seed = 7
 #np.random.seed(seed)
 trFraction = 1 # FIX
 trsize = int(4750*trFraction)
-dim = 85
+dim = 65
 folds = 10
 split = 0.2
 cutoff= 0.90
 epo = 500
 bsize = 25
 
-modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-'+str(int(dim))+'-date-8-17'
+modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-'+str(int(dim))+'-date-8-17onlyTSNE'
 if not os.path.exists('weights/' + modelSpecs):
 	os.makedirs('weights/' + modelSpecs)
 	os.makedirs('predicts/' + modelSpecs)
