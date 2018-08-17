@@ -1,0 +1,18 @@
+discarding /usr/local/anaconda/anaconda2/bin from PATH
+prepending /users/PAS1383/osu10171/.conda/envs/local/bin to PATH
+/users/PAS1383/osu10171/PlantSeedlings
+
+-----------------------
+Resources requested:
+nodes=1:ppn=1
+mem=32gb
+-----------------------
+Resources used:
+cput=82:35:05
+walltime=82:36:45
+mem=12.076 GB
+vmem=21.840 GB
+-----------------------
+Resource units charged (estimate):
+66.090 RUs
+-----------------------

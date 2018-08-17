@@ -228,7 +228,8 @@ def getCnnAug(imgsize, featsize):
 	if featsize > 0:
 		input2 = Input(shape=(featsize,))
 		d = concatenate([d, input2])
-		d = Dense(128, activation=c_activation)(d)
+		d = Dense(128)(d)
+		d = LeakyReLU(0.1)(d)
 
 	#denseFilters = [64, 32]
 	denseFilters = [64, 32]

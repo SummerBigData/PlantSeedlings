@@ -4,9 +4,15 @@ import os
 
 import dataPrep
 
-modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
-predDat = '/predFolds20split0.28-3.npy'
-submitName = 'Folds20Split0.2Date8-3.csv'
+#modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
+modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-65-date-8-13'
+predDat = '/predDim65Folds10split0.28-13.npy'
+submitName = 'Folds10Split0.2Dim65Date8-17.csv'
+
+
+
+
+
 
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',

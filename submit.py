@@ -4,9 +4,10 @@ import os
 
 import dataPrep
 
-modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
-predDat = '/predFolds20split0.28-3.npy'
-submitName = 'Folds20Split0.2Date8-3.csv'
+#modelSpecs = 'cnnConv-16-16-32-32-Dense-64-32-12'
+modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-75-date-8-13'
+predDat = '/predDim75Folds10split0.28-13.npy'
+submitName = 'Folds10Split0.2Dim75Date8-17.csv'
 
 
 

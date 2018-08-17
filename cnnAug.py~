@@ -9,7 +9,7 @@ from keras.utils.np_utils import to_categorical
 # Definitions ---------- Definitions ---------- Definitions ---------- Definitions ---------- Definitions
 
 def DatAug(xSt, unlSt, xtsne, unltsne):
-	
+	'''
 	from sklearn.decomposition import PCA
 	from sklearn import preprocessing
 
@@ -30,9 +30,23 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 	xSt = np.concatenate((xSt, xtsne), axis = 1)
 	unlSt = np.concatenate((unlSt, unltsne), axis = 1)
 	'''
-	xSt = xtsne
-	unlSt = unltsne
-	'''
+	#xSt = xtsne
+	#unlSt = unltsne
+	
+	from sklearn.decomposition import PCA
+	from sklearn import preprocessing
+
+	# Whiten the stamp images
+	xcomb = np.concatenate((xSt, unlSt), axis=0)
+	xcombFlat = xcomb.reshape((xcomb.shape[0], xcomb.shape[1]**2))
+
+	pca = PCA(n_components=100)
+	xCombPCA = pca.fit_transform(xcombFlat)
+
+	# Scale pca correctly
+	xCombPCA = preprocessing.scale(xCombPCA)
+	xSt, unlSt = xCombPCA[ :xSt.shape[0] ], xCombPCA[ xSt.shape[0]: ]
+	
 	#print xSt.min(), xSt.max(), unlSt.min(), unlSt.max()
 	return xSt, unlSt
 
@@ -40,10 +54,9 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 
 seed = 7 
 #np.random.seed(seed)
-trFraction = 1 # FIX
+trFraction = 0.25 # FIX
 trsize = int(4750*trFraction)
-dim = 75 
-featSize = 102
+dim = 85
 folds = 10
 split = 0.2
 cutoff= 0.90
@@ -72,6 +85,10 @@ unlab = dataPrep.getTestDat(dim)
 imgsSt = dataPrep.resizeDat('data/trainImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
 unlabSt = dataPrep.resizeDat('data/testImgsRes400stampBW'+str(200)+'Fixed.npy', dim)
 
+
+#dataPrep.PlotImgs( [imgs[42], imgsSt[42], unlab[42], unlabSt[42]], 2, 2)
+
+
 # Get the tSNE coordinates
 tSNEdat = np.load('data/tSNEresScaledAllResults.npy')#/4.5 + 0.5 # 5544 x 2
 tSNEimgs = tSNEdat[ :imgs.shape[0] ]
@@ -79,7 +96,8 @@ tSNEunlab = tSNEdat[ imgs.shape[0]: ]
 
 # Augment the Data
 xst, unlst = DatAug(imgsSt, unlabSt, tSNEimgs, tSNEunlab)
-print 'Augmentation data size', xst.shape, unlst.shape
+featSize = xst.shape[1]
+print 'Augmentation data size', xst.shape, unlst.shape, featSize
 
 imgs, xst, labels = dataPrep.sciShuffle(imgs, xst, labels, seed)
 
