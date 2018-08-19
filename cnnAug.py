@@ -9,7 +9,7 @@ from keras.utils.np_utils import to_categorical
 # Definitions ---------- Definitions ---------- Definitions ---------- Definitions ---------- Definitions
 
 def DatAug(xSt, unlSt, xtsne, unltsne):
-	'''
+	
 	from sklearn.decomposition import PCA
 	from sklearn import preprocessing
 
@@ -29,9 +29,9 @@ def DatAug(xSt, unlSt, xtsne, unltsne):
 	# Combine both the data together
 	xSt = np.concatenate((xSt, xtsne), axis = 1)
 	unlSt = np.concatenate((unlSt, unltsne), axis = 1)
-	'''
-	xSt = np.zeros((xtsne.shape[0], 1))
-	unlSt = np.zeros((unltsne.shape[0], 1))
+	
+	#xSt = np.zeros((xtsne.shape[0], 1))
+	#unlSt = np.zeros((unltsne.shape[0], 1))
 	'''
 	from sklearn.decomposition import PCA
 	from sklearn import preprocessing
@@ -56,18 +56,14 @@ seed = 7
 #np.random.seed(seed)
 trFraction = 1 # FIX
 trsize = int(4750*trFraction)
-dim = 65
+dim = 85
 folds = 10
 split = 0.2
-cutoff= 0.90
+cutoff= 0.85
 epo = 500
 bsize = 25
 
-modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-'+str(int(dim))+'-date-8-17NoAug'
-if not os.path.exists('weights/' + modelSpecs):
-	os.makedirs('weights/' + modelSpecs)
-	os.makedirs('predicts/' + modelSpecs)
-
+modelSpecs = 'cnnConv-16-32-64-Dense-64-32-12-CB-KERAS-dim-'+str(int(dim))+'-date-8-13'
 label = ['Black-grass', 'Charlock', 'Cleavers', 'Common Chickweed', 'Common wheat',
 	'Fat Hen', 'Loose Silky-bent','Maize', 'Scentless Mayweed', 'Shepherds Purse',
 	'Small-flowered Cranesbill', 'Sugar beet']
